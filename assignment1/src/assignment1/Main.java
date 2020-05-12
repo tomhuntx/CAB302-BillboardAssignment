@@ -1,4 +1,4 @@
-package billboard.controlPanel;
+package assignment1;
 
 public class Main {
 
