@@ -7,9 +7,7 @@ import javax.swing.SwingUtilities;
 public class DisplayBillboard {
 
     /**
-     * Create the GUI.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
+     * Create the GUI.
      */
     private static void createAndShowGUI() {
         new BillboardUI(new DBConnection());

@@ -13,7 +13,7 @@ public class BillboardUI extends JFrame {
     /**
      * Constructor sets up user interface, adds listeners and displays.
      *
-     * @param data The underlying data/model class the UI needs.
+     * @param data The database connection data.
      */
     public BillboardUI(DBConnection data) {
         this.data = data;
