@@ -264,9 +264,6 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         // Create new container and layout
         LBContainer = new JPanel();
 
-        // Increase height of window only
-        setSize(new Dimension(getWidth(), 550));
-
         // Title label
         JLabel titleLabel = new JLabel("List Billboards", JLabel.CENTER );
         titleLabel.setPreferredSize(new Dimension(190,100));
@@ -291,7 +288,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         table.getColumn("Delete").setCellRenderer(new BillboardListTable.ButtonRenderer());
         table.getColumn("Delete").setCellEditor(new BillboardListTable.ButtonEditor(new JCheckBox()));
 
-        table.setBounds(30, 40, 200, 300);
+        table.setBounds(30, 40, 200, 200);
 
         // Set table font
         Font tableFont = titleLabel.getFont().deriveFont(Font.PLAIN, 12f);
@@ -301,7 +298,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         table.setRowHeight(30);
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(150);
-        columnModel.getColumn(1).setPreferredWidth(90);
+        columnModel.getColumn(1).setPreferredWidth(100);
         columnModel.getColumn(2).setPreferredWidth(80);
 
         // Disable table editing
@@ -309,7 +306,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
 
         // Put the table in a scroll pane
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(400, 400));
+        scrollPane.setPreferredSize(new Dimension(400, 300));
 
         // Layout button and title with spring layout
         SpringLayout springlayout = new SpringLayout();

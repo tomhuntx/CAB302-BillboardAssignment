@@ -1,13 +1,11 @@
 package assignment1.billboard.controlPanel;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EventObject;
 
 /**
  * Create the JTable for listing billboards.
@@ -17,21 +15,20 @@ public class BillboardListTable extends DefaultTableModel {
     private static String[] columns = {"Billboard Name", "Creator", "Preview", "Edit", "Delete"};
     private static String[][] data = {
             { "Billboard1", "Jim", "PREV", "EDIT", "DEL" },
-            { "Billboard2 Longer Name 3000", "Fred",  "PREV", "EDIT", "DEL"}
+            { "Billboard2 Longer Name 3000", "Fred",  "PREV", "EDIT", "DEL"},
+            { "Billboard3", "Another name here",  "PREV", "EDIT", "DEL"},
+            { "Billboard4", "A fourth dude",  "PREV", "EDIT", "DEL"}
     };
 
     private String tableName;
-    private static JButton button = new JButton();
+    private static JButton currentButton = new JButton();
+    private static JButton prevButton = new JButton();
     private static JButton delButton = new JButton();
     private static JButton editButton = new JButton();
 
-    //Below button processing code assisted from https://allaboutbasic.com/2011/02/19/jbutton-in-jtable-cell-how-to-add-assign-or-fill-up-jtable%E2%80%99s-cell-with-jbutton-and-then-add-actionlistener-to-enable-click-event-for-that-jbuttons-in-jtable-cell/
-    BillboardListTable(String type)
-    {
+    BillboardListTable(String type) {
         super(data, columns);
         tableName = type;
-
-        button.addActionListener(event -> JOptionPane.showMessageDialog(null,"You have pressed a button") );
     }
 
     public boolean isCellEditable(int row, int cols) {
@@ -58,11 +55,49 @@ public class BillboardListTable extends DefaultTableModel {
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
         }
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                                                     boolean isSelected, int row, int column) {
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             label = (value == null) ? "" : value.toString();
-            button.setText(label);
-            return button;
+            currentButton.setText(label);
+
+            for( ActionListener al : currentButton.getActionListeners() ) {
+                currentButton.removeActionListener( al );
+            }
+            switch (label) {
+                case "PREV":
+                    currentButton.addActionListener(event -> JOptionPane.showMessageDialog(null,"You have pressed preview button") );
+
+                    break;
+                case "EDIT":
+                    currentButton.addActionListener(event -> JOptionPane.showMessageDialog(null,"You have pressed edit button") );
+                    break;
+                case "DEL":
+                    currentButton.addActionListener(ae -> {
+                        // Check that selected row exists
+                        if (table.getRowCount() > 0) {
+                            int selectedRow = table.getSelectedRow();
+                            if(selectedRow != -1) {
+                                // Remove selected row
+                                DefaultTableModel model = (DefaultTableModel) table.getModel();
+                                int input = JOptionPane.showConfirmDialog(null,
+                                        "Are you sure you want to delete " + model.getValueAt(row, 0), "Billboard Deletion", JOptionPane.OK_CANCEL_OPTION);
+                                if (input == JOptionPane.YES_OPTION) {
+                                    model.removeRow(selectedRow);
+                                }
+                            }
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "Please select a billboard to delete.",
+                                    "Attention", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
+                    });
+
+                    break;
+                default:
+                    currentButton.addActionListener(event -> JOptionPane.showMessageDialog(null,"Error") );
+            }
+
+            return currentButton;
         }
         public Object getCellEditorValue() {
             return label;
