@@ -1,6 +1,7 @@
 package assignment1.billboard.controlPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.text.MessageFormat;
 
@@ -14,13 +15,11 @@ public class ControlPanelManager {
         JFrame.setDefaultLookAndFeelDecorated(true);
         ui = new ControlPanelUI();
 
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ui.loginGUI();
+        // Run the first control panel window
+        //SwingUtilities.invokeLater(ui::loginGUI);
 
-                // hub test
-            }
-        });
+        // To skip to and test control panel
+        SwingUtilities.invokeLater(ui::ControlPanelHub);
     }
 
     /**
@@ -35,6 +34,9 @@ public class ControlPanelManager {
         ui.dispose();
         ui = new ControlPanelUI();
         ui.ControlPanelHub();
+
+        // Set the location of the UI
+        ui.setLocation(new Point(400, 200));
     }
 
     public static boolean[] getPermissions() {
