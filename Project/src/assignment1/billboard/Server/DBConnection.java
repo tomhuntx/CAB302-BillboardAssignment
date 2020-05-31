@@ -18,7 +18,7 @@ public class DBConnection {
     /**
      * Constructor initializes the connection.
      */
-    private DBConnection() {
+    public DBConnection() {
 
         FileInputStream in = null;
         try {
