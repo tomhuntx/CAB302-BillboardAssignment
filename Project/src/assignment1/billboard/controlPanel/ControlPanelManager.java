@@ -25,6 +25,7 @@ public class ControlPanelManager {
     /**
      * Login when successful
      * ...
+     * @param userID of current control panel user
      */
     protected static void login(String userID) {
         current_user = userID;
@@ -33,12 +34,16 @@ public class ControlPanelManager {
         // Dispose of the current panel and create a new one
         ui.dispose();
         ui = new ControlPanelUI();
-        ui.ControlPanelHub();
+        SwingUtilities.invokeLater(ui::ControlPanelHub);
 
         // Set the location of the UI
         ui.setLocation(new Point(400, 200));
     }
 
+    /**
+     * Get all valid permissions from user
+     * @return a boolean array of permissions (createBB, listBB, scheduleBB, editPermissions)
+     */
     public static boolean[] getPermissions() {
 
         // would get all valid permissions for the current user
