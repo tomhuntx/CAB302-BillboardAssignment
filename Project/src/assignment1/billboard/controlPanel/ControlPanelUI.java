@@ -2,10 +2,14 @@ package assignment1.billboard.controlPanel;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -32,6 +36,12 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     // Name of billboard
     JTextField billName;
     String name_input;
+
+    // RGB colours of billboard background
+    ArrayList<JTextField> rgb;
+
+    // Saved hex colour of billboard
+    String billColour = "#32A852";
 
     /**
      * Display the Control Panel Login GUI
@@ -212,8 +222,11 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     });
 
     /**
-     * Display the Create Billboards section
-     * ...
+     * Display the Create Billboards tool
+     * Users can:
+     * -Change the background colour with RGB text inputs
+     * -Input text onto the canvas
+     * -Import and export .xml files
      */
     public void CreateBillboards() {
         // Create new container and layout
@@ -240,11 +253,62 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         namePanel.add(billName);
 
         // Billboard editor
-        JPanel billPanel = new JPanel();
         billboardText = new JTextArea();
-        billPanel.add(billboardText);
         billboardText.setBorder(new LineBorder(Color.BLACK, 1));
         billboardText.setPreferredSize(new Dimension(640,360));
+
+        // RGB Panel
+        JPanel RGBPanel = new JPanel(new GridLayout(5,1));
+        JLabel RGBLabel = new JLabel("<html><div style='text-align: center;'>" +
+                                          "Background<br>Colour</div></html>");
+        RGBPanel.add(RGBLabel);
+        RGBPanel.setBackground(Color.lightGray);
+        RGBPanel.setPreferredSize(new Dimension(70,200));
+
+        // R, G, and B text input for RGB Panel
+        String[] texts = new String[] {"R:", "G:", "B:"};
+        rgb = new ArrayList<>();
+        for (String s : texts)
+        {
+            JPanel panel = new JPanel();
+            JTextField tf = new JTextField();
+            JLabel label = new JLabel(s);
+            label.setFont(inputFont);
+            tf.setFont(inputFont);
+            tf.setPreferredSize(new Dimension(35,25));
+            tf.setText("255");
+            panel.add(label);
+            panel.add(tf);
+            panel.setBackground(Color.lightGray);
+            RGBPanel.add(panel);
+
+            // Limit input field to three characters and numbers
+            // Thanks to Dr. Payne: https://stackoverflow.com/a/35393356
+            tf.addKeyListener(new KeyAdapter() {
+                public void keyTyped(KeyEvent e) {
+                    if (tf.getText().length() >= 3) {
+                        e.consume();
+                    }
+                    // Only allow numbers to be added
+                    char c = e.getKeyChar();
+                    if (!((c >= '0') && (c <= '9') ||
+                            (c == KeyEvent.VK_BACK_SPACE) ||
+                            (c == KeyEvent.VK_DELETE))) {
+                        e.consume();
+                    }
+                }
+            });
+
+            // Safe text fields for later use
+            rgb.add(tf);
+        }
+        // Add confirm button to RGB Panel
+        JPanel confirmPanel = new JPanel();
+        confirmRGB.setPreferredSize(new Dimension(60,25));
+        Font confirmFont = titleLabel.getFont().deriveFont(Font.PLAIN, 10f);
+        confirmRGB.setFont(confirmFont);
+        confirmPanel.add(confirmRGB);
+        RGBPanel.add(confirmPanel);
 
         // Hub button
         returnHub.setPreferredSize(new Dimension(100,50));
@@ -263,28 +327,35 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         springlayout.putConstraint(SpringLayout.SOUTH, exportXML, -30, SpringLayout.SOUTH, CBContainer);
         springlayout.putConstraint(SpringLayout.EAST, exportXML, -30, SpringLayout.EAST, CBContainer);
 
-        // Layout title
+        // Layout Title
         springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, CBContainer);
         springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0,
                 SpringLayout.HORIZONTAL_CENTER, CBContainer);
 
-        // Layout name panel
+        // Layout Name Panel
         springlayout.putConstraint(SpringLayout.NORTH, namePanel, 120, SpringLayout.NORTH, CBContainer);
         springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, namePanel, 0,
                 SpringLayout.HORIZONTAL_CENTER, CBContainer);
 
-        // Layout billboard
-        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, billPanel, 0,
+        // Layout RGB Panel
+        springlayout.putConstraint(SpringLayout.VERTICAL_CENTER, RGBPanel, 0, SpringLayout.VERTICAL_CENTER,
+                CBContainer);
+        springlayout.putConstraint(SpringLayout.EAST, RGBPanel, -25, SpringLayout.EAST, CBContainer);
+
+        // Layout Billboard
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, billboardText, 0,
                 SpringLayout.HORIZONTAL_CENTER, CBContainer);
-        springlayout.putConstraint(SpringLayout.VERTICAL_CENTER, billPanel, -90,
+        springlayout.putConstraint(SpringLayout.VERTICAL_CENTER, billboardText, -90,
                 SpringLayout.HORIZONTAL_CENTER, CBContainer);
 
-        CBContainer.add(billPanel);
+
+        CBContainer.add(RGBPanel);
+        CBContainer.add(titleLabel);
+        CBContainer.add(billboardText);
         CBContainer.add(namePanel);
         CBContainer.add(returnHub);
         CBContainer.add(importXML);
         CBContainer.add(exportXML);
-        CBContainer.add(titleLabel);
         getContentPane().add(CBContainer);
 
         // Set the current complete container
@@ -306,6 +377,37 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         }
     });
 
+    // Button used to change the background colour of the billboard
+    JButton confirmRGB = new JButton( new AbstractAction("Set") {
+        @Override
+        public void actionPerformed( ActionEvent e ) {
+            int[] col = new int[3];
+
+            try {
+                for (int i = 0; i < rgb.size(); i++) {
+                    col[i] = Integer.parseInt(rgb.get(i).getText());
+                }
+
+                Color bgColour = new Color(col[0], col[1], col[2]);
+                billboardText.setBackground(bgColour);
+
+                // Save colour as a hexadecimal
+                billColour = "#"+Integer.toHexString(bgColour.getRGB()).substring(2);
+                System.out.println("Colour set to (hex): " + billColour);
+            }
+            catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null,
+                        "Please enter a valid RGB colour.",
+                        "Set Background Failed", JOptionPane.WARNING_MESSAGE);
+            }
+            catch (IllegalArgumentException iae) {
+                JOptionPane.showMessageDialog(null,
+                        "Each number must be between 0 and 255.",
+                        "Set Background Failed", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    });
+
     // Button used to return to the hub
     JButton importXML = new JButton( new AbstractAction("Import .xml") {
         @Override
@@ -313,22 +415,22 @@ public class ControlPanelUI extends JFrame implements ActionListener {
             OpenXML open = new OpenXML();
 
             // Try to open a file select menu
-            try {
-                open.SelectFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            open.SelectFile();
 
-            // Set the billboard text if successful
-            billboardText.setText(open.builder.toString());
+            // If successful, change the billboard name to the name of the new file
+            if (open.filepath != null) {
+                name_input = open.getName();
 
-            // Change the billboard name to the name of the new file
-            name_input = open.chooser.getSelectedFile().getName();
-            // Remove the xml tag from the string if it exists
-            if (name_input.contains(".xml")) {
-                name_input = name_input.substring(0, name_input.lastIndexOf(".xml"));
+                // Remove the xml tag from the string if it exists
+                if (name_input.contains(".xml")) {
+                    name_input = name_input.substring(0, name_input.lastIndexOf(".xml"));
+                }
+
+                billName.setText(name_input);
+
+                // Set the billboard text
+                billboardText.setText(open.builder.toString());
             }
-            billName.setText(name_input);
         }
     });
 
@@ -342,7 +444,8 @@ public class ControlPanelUI extends JFrame implements ActionListener {
 
     /**
      * Display the List Billboards section
-     * ...
+     * Lists billboard info in a JTable
+     * Table includes billboard name, creator, preview button, edit button, and delete button
      */
     public void ListBillboards() {
         // Create new container and layout

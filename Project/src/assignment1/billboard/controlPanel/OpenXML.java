@@ -18,7 +18,16 @@ public class OpenXML {
     // Scanner of input file
     Scanner input;
 
-    public void SelectFile() throws Exception {
+    // Billboard file's title
+    String filepath = null;
+
+    /**
+     * Opens a file chooser window for the CreateBillboards window
+     * Accepts .xml files selected by the user
+     * Catches when users select a file that does not exist or if they cancel the search
+     */
+
+    public void SelectFile() {
         // Set up the file chooser
         chooser.setDialogTitle("Open an .xml billboard file.");
         // Search for xml files only
@@ -42,26 +51,36 @@ public class OpenXML {
                     builder.append("\n");
                 }
 
+                // Record the file's path
+                filepath = chooser.getSelectedFile().getName();
+
                 // Close scanner when finished
                 input.close();
             }
             // If wrong file chosen, re-opens select file
             catch (FileNotFoundException fnf) {
                 JOptionPane.showMessageDialog(null,
-                        "Could not find the .xml file specified.",
+                        "Could not find the file specified.",
                         "Attention", JOptionPane.WARNING_MESSAGE);
                 SelectFile();
+                filepath = null;
             }
             // If unexpected problem, closes search window
             catch (Exception other) {
                 JOptionPane.showMessageDialog(null,
                         "There was a problem. Please try again",
                         "Attention", JOptionPane.ERROR_MESSAGE);
+                filepath = null;
             }
         }
         // Otherwise, the search has been cancelled
         else {
             System.out.println("User has cancelled the search.");
+            filepath = null;
         }
+    }
+
+    public String getName() {
+        return filepath;
     }
 }
