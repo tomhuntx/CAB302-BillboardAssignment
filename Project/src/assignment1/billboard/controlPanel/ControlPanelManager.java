@@ -11,6 +11,9 @@ public class ControlPanelManager {
     public static boolean[] permissions;
     private static ControlPanelUI ui;
 
+    /**
+     * Start the control panel application and create the login GUI
+     */
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
         ui = new ControlPanelUI();
@@ -24,7 +27,7 @@ public class ControlPanelManager {
 
     /**
      * Login when successful
-     * ...
+     * Successful if username and password are correct
      * @param userID of current control panel user
      */
     protected static void login(String userID) {

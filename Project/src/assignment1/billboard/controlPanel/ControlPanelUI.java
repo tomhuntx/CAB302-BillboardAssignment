@@ -1,13 +1,12 @@
 package assignment1.billboard.controlPanel;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+import javax.swing.border.LineBorder;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class ControlPanelUI extends JFrame implements ActionListener {
@@ -26,6 +25,13 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     JPanel SBContainer;
     JPanel EUContainer;
     JPanel currentContainer;
+
+    // Text for billboard
+    JTextArea billboardText;
+
+    // Name of billboard
+    JTextField billName;
+    String name_input;
 
     /**
      * Display the Control Panel Login GUI
@@ -214,7 +220,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         CBContainer = new JPanel();
 
         // Change the size of the window
-        setSize(new Dimension(800, 600));
+        setSize(new Dimension(900, 660));
 
         // Title label
         JLabel titleLabel = new JLabel("Create Billboards", JLabel.CENTER );
@@ -222,18 +228,62 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         Font largerFont = titleLabel.getFont().deriveFont(Font.PLAIN, 25f);
         titleLabel.setFont(largerFont);
 
+        // Name Panel
+        JPanel namePanel = new JPanel();
+        JLabel nameLabel = new JLabel();
+        nameLabel.setText("Billboard Title: ");
+        billName = new JTextField();
+        Font inputFont = titleLabel.getFont().deriveFont(Font.PLAIN, 16f);
+        billName.setFont(inputFont);
+        billName.setPreferredSize(new Dimension(150,25));
+        namePanel.add(nameLabel);
+        namePanel.add(billName);
+
+        // Billboard editor
+        JPanel billPanel = new JPanel();
+        billboardText = new JTextArea();
+        billPanel.add(billboardText);
+        billboardText.setBorder(new LineBorder(Color.BLACK, 1));
+        billboardText.setPreferredSize(new Dimension(640,360));
+
         // Hub button
         returnHub.setPreferredSize(new Dimension(100,50));
+
+        // XML buttons
+        importXML.setPreferredSize(new Dimension(110,40));
+        exportXML.setPreferredSize(new Dimension(110,40));
 
         // Layout buttons with spring layout
         SpringLayout springlayout = new SpringLayout();
         CBContainer.setLayout(springlayout);
         springlayout.putConstraint(SpringLayout.NORTH, returnHub, 30, SpringLayout.NORTH, CBContainer);
         springlayout.putConstraint(SpringLayout.WEST, returnHub, 30, SpringLayout.WEST, CBContainer);
-        springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, CBContainer);
-        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0, SpringLayout.HORIZONTAL_CENTER, CBContainer);
+        springlayout.putConstraint(SpringLayout.SOUTH, importXML, -30, SpringLayout.SOUTH, CBContainer);
+        springlayout.putConstraint(SpringLayout.WEST, importXML, 30, SpringLayout.WEST, CBContainer);
+        springlayout.putConstraint(SpringLayout.SOUTH, exportXML, -30, SpringLayout.SOUTH, CBContainer);
+        springlayout.putConstraint(SpringLayout.EAST, exportXML, -30, SpringLayout.EAST, CBContainer);
 
+        // Layout title
+        springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, CBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0,
+                SpringLayout.HORIZONTAL_CENTER, CBContainer);
+
+        // Layout name panel
+        springlayout.putConstraint(SpringLayout.NORTH, namePanel, 120, SpringLayout.NORTH, CBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, namePanel, 0,
+                SpringLayout.HORIZONTAL_CENTER, CBContainer);
+
+        // Layout billboard
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, billPanel, 0,
+                SpringLayout.HORIZONTAL_CENTER, CBContainer);
+        springlayout.putConstraint(SpringLayout.VERTICAL_CENTER, billPanel, -90,
+                SpringLayout.HORIZONTAL_CENTER, CBContainer);
+
+        CBContainer.add(billPanel);
+        CBContainer.add(namePanel);
         CBContainer.add(returnHub);
+        CBContainer.add(importXML);
+        CBContainer.add(exportXML);
         CBContainer.add(titleLabel);
         getContentPane().add(CBContainer);
 
@@ -241,7 +291,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         currentContainer = CBContainer;
     }
 
-    // Button used to return to the hub
+    // Button used to return to the hub (used by each control panel section)
     JButton returnHub = new JButton( new AbstractAction("← Hub") {
         @Override
         public void actionPerformed( ActionEvent e ) {
@@ -253,6 +303,40 @@ public class ControlPanelUI extends JFrame implements ActionListener {
 
             // Revalidate content pane
             getContentPane().revalidate();
+        }
+    });
+
+    // Button used to return to the hub
+    JButton importXML = new JButton( new AbstractAction("Import .xml") {
+        @Override
+        public void actionPerformed( ActionEvent ae )  {
+            OpenXML open = new OpenXML();
+
+            // Try to open a file select menu
+            try {
+                open.SelectFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Set the billboard text if successful
+            billboardText.setText(open.builder.toString());
+
+            // Change the billboard name to the name of the new file
+            name_input = open.chooser.getSelectedFile().getName();
+            // Remove the xml tag from the string if it exists
+            if (name_input.contains(".xml")) {
+                name_input = name_input.substring(0, name_input.lastIndexOf(".xml"));
+            }
+            billName.setText(name_input);
+        }
+    });
+
+    // Button used to return to the hub
+    JButton exportXML = new JButton( new AbstractAction("Export .xml") {
+        @Override
+        public void actionPerformed( ActionEvent e ) {
+
         }
     });
 
@@ -300,6 +384,10 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         columnModel.getColumn(0).setPreferredWidth(150);
         columnModel.getColumn(1).setPreferredWidth(100);
         columnModel.getColumn(2).setPreferredWidth(80);
+
+        // Set up table row sorting
+        table.setRowSorter(new TableRowSorter<>(model));
+        table.setAutoCreateRowSorter(true);
 
         // Disable table editing
         table.setDefaultEditor(Object.class, null);
