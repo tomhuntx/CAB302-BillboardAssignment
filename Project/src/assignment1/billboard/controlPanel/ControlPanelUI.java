@@ -5,13 +5,18 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ControlPanelUI extends JFrame implements ActionListener {
 
@@ -31,7 +36,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     JPanel currentContainer;
 
     // Text for billboard
-    JTextArea billboardText;
+    JTextPane billboardText;
 
     // Name of billboard
     JTextField billName;
@@ -45,6 +50,9 @@ public class ControlPanelUI extends JFrame implements ActionListener {
 
     // Saved font for billboards
     Font billboardFont;
+
+    // Scheduler date
+    JComboBox<String> dateBox;
 
     /**
      * Display the Control Panel Login GUI
@@ -216,6 +224,12 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     JButton scheduleBB = new JButton( new AbstractAction("Schedule Billboard") {
         @Override
         public void actionPerformed( ActionEvent e ) {
+            // Move screen to schedule billboards section
+            getContentPane().remove(hubContainer);
+            ScheduleBillboards();
+
+            // Revalidate content pane
+            getContentPane().revalidate();
         }
     });
     JButton editPermissions = new JButton( new AbstractAction("Edit Permissions") {
@@ -257,24 +271,27 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         namePanel.add(billName);
 
         // Billboard editor
-        billboardText = new JTextArea();
+        billboardText = new JTextPane();
         billboardText.setBorder(new LineBorder(Color.BLACK, 1));
         billboardText.setPreferredSize(new Dimension(640,360));
         billboardFont = titleLabel.getFont().deriveFont(Font.PLAIN, 40f);
         billboardText.setFont(billboardFont);
+
+        // Center billboard text
+        StyledDocument doc = billboardText.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
         // Font size panel
         JPanel fontPanel = new JPanel(new GridLayout(3,1));
         fontPanel.setPreferredSize(new Dimension(75,150));
         JLabel fontLabel = new JLabel("Font Size", SwingConstants.CENTER);
         fontPanel.add(fontLabel);
-        fontPanel.setBackground(Color.lightGray);
         JPanel upPanel = new JPanel();
         JPanel downPanel = new JPanel();
         upPanel.add(fontUP);
         downPanel.add(fontDown);
-        upPanel.setBackground(Color.lightGray);
-        downPanel.setBackground(Color.lightGray);
         fontUP.setPreferredSize(new Dimension(45,35));
         fontDown.setPreferredSize(new Dimension(45,35));
         fontPanel.add(upPanel);
@@ -284,7 +301,6 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         JPanel RGBPanel = new JPanel(new GridLayout(5,1));
         JLabel RGBLabel = new JLabel("<html>Background<br>Colour</html>", SwingConstants.CENTER);
         RGBPanel.add(RGBLabel);
-        RGBPanel.setBackground(Color.lightGray);
         RGBPanel.setPreferredSize(new Dimension(80,200));
 
         // R, G, and B text input for RGB Panel
@@ -301,7 +317,6 @@ public class ControlPanelUI extends JFrame implements ActionListener {
             tf.setText("255");
             panel.add(label);
             panel.add(tf);
-            panel.setBackground(Color.lightGray);
             RGBPanel.add(panel);
 
             // Limit input field to three characters and numbers
@@ -378,7 +393,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         CBContainer.add(fontPanel);
         CBContainer.add(RGBPanel);
         CBContainer.add(titleLabel);
-        CBContainer.add(billboardText);
+        CBContainer.add(billboardText, SwingConstants.CENTER);
         CBContainer.add(namePanel);
         CBContainer.add(returnHub);
         CBContainer.add(importXML);
@@ -435,7 +450,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         }
     });
 
-    // Button used to return to the hub (used by each control panel section)
+    // Button used to increase font size
     JButton fontUP = new JButton( new AbstractAction("▲") {
         @Override
         public void actionPerformed( ActionEvent e ) {
@@ -448,7 +463,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         }
     });
 
-    // Button used to return to the hub (used by each control panel section)
+    // Button used to lower font size
     JButton fontDown = new JButton( new AbstractAction("▼") {
         @Override
         public void actionPerformed( ActionEvent e ) {
@@ -461,7 +476,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         }
     });
 
-    // Button used to return to the hub
+    // Button used import an .xml file
     JButton importXML = new JButton( new AbstractAction("Import .xml") {
         @Override
         public void actionPerformed( ActionEvent ae )  {
@@ -487,7 +502,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         }
     });
 
-    // Button used to return to the hub
+    // Button used export an .xml file
     JButton exportXML = new JButton( new AbstractAction("Export .xml") {
         @Override
         public void actionPerformed( ActionEvent e ) {
@@ -558,9 +573,11 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         springlayout.putConstraint(SpringLayout.NORTH, returnHub, 30, SpringLayout.NORTH, LBContainer);
         springlayout.putConstraint(SpringLayout.WEST, returnHub, 30, SpringLayout.WEST, LBContainer);
         springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, LBContainer);
-        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0, SpringLayout.HORIZONTAL_CENTER, LBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0, SpringLayout.HORIZONTAL_CENTER,
+                LBContainer);
         springlayout.putConstraint(SpringLayout.SOUTH, scrollPane, 0, SpringLayout.SOUTH, LBContainer);
-        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollPane, 0, SpringLayout.HORIZONTAL_CENTER, LBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollPane, 0, SpringLayout.HORIZONTAL_CENTER,
+                LBContainer);
 
         LBContainer.add(scrollPane);
         LBContainer.add(returnHub);
@@ -578,23 +595,109 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     public void ScheduleBillboards() {
         // Create new container and layout
         SBContainer = new JPanel();
-        FlowLayout layout = new FlowLayout();
-        layout.setHgap(0);
-        layout.setVgap(10);
-        SBContainer.setLayout(layout);
 
         // Title label
         JLabel titleLabel = new JLabel("Schedule Billboards", JLabel.CENTER );
-        titleLabel.setPreferredSize(new Dimension(300,60));
+        titleLabel.setPreferredSize(new Dimension(230,100));
         Font largerFont = titleLabel.getFont().deriveFont(Font.PLAIN, 25f);
         titleLabel.setFont(largerFont);
 
+        // Hub button
+        returnHub.setPreferredSize(new Dimension(100,50));
+
+        // Weekly Calender
+        JPanel calPanel = new JPanel(new GridLayout(1,7));
+        calPanel.setPreferredSize(new Dimension(700,180));
+        String[] days = new String[7];
+
+        // Get the current week
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
+
+        // Keep track of the day panels
+        ArrayList<JPanel> dayPanels = new ArrayList<>();
+
+        // Create a font for the days
+        Font dayFont = titleLabel.getFont().deriveFont(Font.ITALIC, 18f);
+
+        // Create a day panel for each day of the week and a corresponding time
+        for (int i = 0; i < days.length; i++) {
+            days[i] = sdf.format(cal.getTime());
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+
+            // Create a label and panel for each day of the week
+            JLabel dayLabel = new JLabel();
+            dayLabel.setText(days[i]);
+            dayLabel.setHorizontalAlignment(JLabel.CENTER);
+            dayLabel.setFont(dayFont);
+
+            JPanel dayPanel = new JPanel(new GridLayout(5,1));
+            dayPanel.setBorder(new LineBorder(Color.BLACK, 1));
+
+            dayPanel.add(dayLabel);
+            dayPanels.add(dayPanel);
+            calPanel.add(dayPanel);
+        }
+
+        // Date Scheduling panel
+        JPanel schPanel = new JPanel(new GridLayout(1,4));
+        schPanel.setPreferredSize(new Dimension(500,50));
+        schPanel.setBorder(new LineBorder(Color.BLACK, 1));
+        JPanel datePanel = new JPanel();
+        JLabel dateLabel = new JLabel("Date:");
+        dateLabel.setFont(dayFont);
+        datePanel.add(dateLabel);
+        dateBox = new JComboBox<>(days);
+        dateBox.setPreferredSize(new Dimension(80,38));
+        dateBox.setFont(dayFont);
+        datePanel.add(dateBox);
+        schPanel.add(datePanel);
+
+
+        // Confirm button
+        scheduleConfirm.setPreferredSize(new Dimension(80,45));
+
+        // Layout elements with spring layout
+        SpringLayout springlayout = new SpringLayout();
+        SBContainer.setLayout(springlayout);
+        springlayout.putConstraint(SpringLayout.NORTH, returnHub, 30, SpringLayout.NORTH, SBContainer);
+        springlayout.putConstraint(SpringLayout.WEST, returnHub, 30, SpringLayout.WEST, SBContainer);
+        springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, SBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0, SpringLayout.HORIZONTAL_CENTER,
+                SBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, calPanel, 0, SpringLayout.HORIZONTAL_CENTER,
+                SBContainer);
+        springlayout.putConstraint(SpringLayout.VERTICAL_CENTER, calPanel, -20, SpringLayout.VERTICAL_CENTER,
+                SBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, schPanel, 0, SpringLayout.HORIZONTAL_CENTER,
+                SBContainer);
+        springlayout.putConstraint(SpringLayout.SOUTH, schPanel, -70, SpringLayout.SOUTH, SBContainer);
+        springlayout.putConstraint(SpringLayout.SOUTH, scheduleConfirm, -55, SpringLayout.SOUTH, SBContainer);
+        springlayout.putConstraint(SpringLayout.EAST, scheduleConfirm, -35, SpringLayout.EAST, SBContainer);
+
+        // Add components to the container
+        SBContainer.add(calPanel);
+        SBContainer.add(schPanel);
+        SBContainer.add(scheduleConfirm);
+        SBContainer.add(returnHub);
         SBContainer.add(titleLabel);
         getContentPane().add(SBContainer);
+
+        // Change the size of the window
+        setSize(new Dimension(800, getHeight()));
 
         // Set the current complete container
         currentContainer = SBContainer;
     }
+
+    // Button used to confirm the chosen scheduled billboard
+    JButton scheduleConfirm = new JButton( new AbstractAction("Confirm") {
+        @Override
+        public void actionPerformed( ActionEvent e ) {
+            String selectedItem = (String) dateBox.getSelectedItem();
+
+        }
+    });
 
     /**
      * Display the Edit Users section
@@ -603,19 +706,29 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     public void EditUsers() {
         // Create new container and layout
         EUContainer = new JPanel();
-        FlowLayout layout = new FlowLayout();
-        layout.setHgap(0);
-        layout.setVgap(10);
-        EUContainer.setLayout(layout);
 
         // Title label
-        JLabel titleLabel = new JLabel("Edit Permissions", JLabel.CENTER );
-        titleLabel.setPreferredSize(new Dimension(300,60));
+        JLabel titleLabel = new JLabel("Edit Users", JLabel.CENTER );
+        titleLabel.setPreferredSize(new Dimension(230,100));
         Font largerFont = titleLabel.getFont().deriveFont(Font.PLAIN, 25f);
         titleLabel.setFont(largerFont);
 
+        // Hub button
+        returnHub.setPreferredSize(new Dimension(100,50));
+
+        // Layout button and title with spring layout
+        SpringLayout springlayout = new SpringLayout();
+        EUContainer.setLayout(springlayout);
+        springlayout.putConstraint(SpringLayout.NORTH, returnHub, 30, SpringLayout.NORTH, EUContainer);
+        springlayout.putConstraint(SpringLayout.WEST, returnHub, 30, SpringLayout.WEST, EUContainer);
+        springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, EUContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0, SpringLayout.HORIZONTAL_CENTER,
+                EUContainer);
+
+        // Add components to the container
+        EUContainer.add(returnHub);
         EUContainer.add(titleLabel);
-        getContentPane().add(EUContainer);
+        getContentPane().add(SBContainer);
 
         // Set the current complete container
         currentContainer = EUContainer;
