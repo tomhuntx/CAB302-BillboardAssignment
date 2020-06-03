@@ -12,6 +12,8 @@ public class RunServer {
         try {
             Statement st = connection.createStatement();
             CreateBillboardsTable(st);
+            CreateScheduleTable(st);
+            CreateUsersTable(st);
 
             PreparedStatement insertStatement = connection.prepareStatement(INSERTBILLBOARD);
             addBillboard(insertStatement, xml2String(new File("C:/Users/Sympil/Desktop/Study/2020_Semester_1/CAB302/billboards/1.xml")), "billboard01");
@@ -45,10 +47,52 @@ public class RunServer {
     private static void CreateBillboardsTable(Statement st){
         try {
             st.executeQuery(
-                    "CREATE TABLE IF NOT EXISTS billboards(" +
-                            "name varchar(255) NOT NULL default '', " +
-                            //"age int(10) unsigned NOT NULL default '0');");
-                            "billboardxml mediumblob);");
+                    "CREATE TABLE IF NOT EXISTS Billboards(" +
+                            "Name varchar(255) NOT NULL default '', " +
+                            "BillboardXML mediumblob);");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param st Used for basic SQL Statements.
+     *           The method is also run in conjunction with the other CreateTable methods. The Schedule table should
+     *           contain the billboard's name, day and time its starting at, its duration and the billboard's creator.
+     *           The day and time value gets stored in HH:MM:SS format, meaning should the date be the 1st, 24hours
+     *           will be added to the starting time, for the 7th, 168 hours.
+     *
+     */
+    private static void CreateScheduleTable(Statement st){
+        try {
+            st.executeQuery(
+                    "CREATE TABLE IF NOT EXISTS Schedule(" +
+                            "Name varchar(255) NOT NULL default ' '," +
+                            "Start time NOT NULL default '0 08:00'," +
+                            "Duration int(4) NOT NULL default '0'," +
+                            "Creator varchar(255) NOT NULL default ' ');");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param st Used for basic SQL Statements
+     *           The final Table creation method. The User method contain's the username of users, with their associated
+     *           permissions granted to them in a string format being either "true" or "false
+     */
+    private static void CreateUsersTable(Statement st){
+        try {
+            st.executeQuery(
+                    "CREATE TABLE IF NOT EXISTS Users(" +
+                            "Username varchar(255) NOT NULL default ' '," +
+                            "CreateBillboards int(2) NOT NULL default '0'," +
+                            "EditAllBillboards int(2) NOT NULL default '0'," +
+                            "ScheduleBillboards int(2) NOT NULL default '0'," +
+                            "EditUsers int(2) NOT NULL default '0'," +
+                            "HashedPasswords blob);");
+            //  ALso add a User called Admin or something, which has all permissions with the hashed password.
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,10 +1,13 @@
 package assignment1.billboard.controlPanel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class ControlPanelUI extends JFrame implements ActionListener {
@@ -119,7 +122,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         hubContainer.setLayout(layout);
 
         // Title label
-        JLabel titleLabel = new JLabel("Control Panel Hub", JLabel.CENTER );
+        JLabel titleLabel = new JLabel("Control Panel Hub", JLabel.CENTER);
         titleLabel.setPreferredSize(new Dimension(300,100));
         Font largerFont = titleLabel.getFont().deriveFont(Font.PLAIN, 25f);
         titleLabel.setFont(largerFont);
@@ -155,9 +158,11 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         hubContainer.add(optionsPanel);
         getContentPane().add(hubContainer);
 
+        // Disable resizability
+        setResizable(false);
+
         // Display the window
         setPreferredSize(new Dimension(600, 450));
-        setResizable(false);
         pack();
         setVisible(true);
 
@@ -170,8 +175,6 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         @Override
         public void actionPerformed( ActionEvent e ) {
             // Move screen to create billboards section
-
-            // Remove hub container and
             getContentPane().remove(hubContainer);
             CreateBillboards();
 
@@ -182,6 +185,12 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     JButton listBB = new JButton( new AbstractAction("List Billboard") {
         @Override
         public void actionPerformed( ActionEvent e ) {
+            // Move screen to list billboards section
+            getContentPane().remove(hubContainer);
+            ListBillboards();
+
+            // Revalidate content pane
+            getContentPane().revalidate();
         }
     });
     JButton scheduleBB = new JButton( new AbstractAction("Schedule Billboard") {
@@ -203,10 +212,9 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     public void CreateBillboards() {
         // Create new container and layout
         CBContainer = new JPanel();
-        FlowLayout layout = new FlowLayout();
-        layout.setHgap(0);
-        layout.setVgap(10);
-        CBContainer.setLayout(layout);
+
+        // Change the size of the window
+        setSize(new Dimension(800, 600));
 
         // Title label
         JLabel titleLabel = new JLabel("Create Billboards", JLabel.CENTER );
@@ -255,17 +263,63 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     public void ListBillboards() {
         // Create new container and layout
         LBContainer = new JPanel();
-        FlowLayout layout = new FlowLayout();
-        layout.setHgap(0);
-        layout.setVgap(10);
-        LBContainer.setLayout(layout);
 
         // Title label
         JLabel titleLabel = new JLabel("List Billboards", JLabel.CENTER );
-        titleLabel.setPreferredSize(new Dimension(300,60));
+        titleLabel.setPreferredSize(new Dimension(190,100));
         Font largerFont = titleLabel.getFont().deriveFont(Font.PLAIN, 25f);
         titleLabel.setFont(largerFont);
 
+        // Hub button
+        returnHub.setPreferredSize(new Dimension(100,50));
+
+        // Initialise list Table
+        JTable table = new JTable();
+        TableModel model = new BillboardListTable("billboard list");
+        table.setModel(model);
+
+        // Set button columns as such
+        table.getColumn("Preview").setCellRenderer(new BillboardListTable.ButtonRenderer());
+        table.getColumn("Preview").setCellEditor(new BillboardListTable.ButtonEditor(new JCheckBox()));
+
+        table.getColumn("Edit").setCellRenderer(new BillboardListTable.ButtonRenderer());
+        table.getColumn("Edit").setCellEditor(new BillboardListTable.ButtonEditor(new JCheckBox()));
+
+        table.getColumn("Delete").setCellRenderer(new BillboardListTable.ButtonRenderer());
+        table.getColumn("Delete").setCellEditor(new BillboardListTable.ButtonEditor(new JCheckBox()));
+
+        table.setBounds(30, 40, 200, 200);
+
+        // Set table font
+        Font tableFont = titleLabel.getFont().deriveFont(Font.PLAIN, 12f);
+        table.setFont(tableFont);
+
+        // Customise the table spacing
+        table.setRowHeight(30);
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(150);
+        columnModel.getColumn(1).setPreferredWidth(100);
+        columnModel.getColumn(2).setPreferredWidth(80);
+
+        // Disable table editing
+        table.setDefaultEditor(Object.class, null);
+
+        // Put the table in a scroll pane
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(400, 300));
+
+        // Layout button and title with spring layout
+        SpringLayout springlayout = new SpringLayout();
+        LBContainer.setLayout(springlayout);
+        springlayout.putConstraint(SpringLayout.NORTH, returnHub, 30, SpringLayout.NORTH, LBContainer);
+        springlayout.putConstraint(SpringLayout.WEST, returnHub, 30, SpringLayout.WEST, LBContainer);
+        springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, LBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0, SpringLayout.HORIZONTAL_CENTER, LBContainer);
+        springlayout.putConstraint(SpringLayout.SOUTH, scrollPane, 0, SpringLayout.SOUTH, LBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, scrollPane, 0, SpringLayout.HORIZONTAL_CENTER, LBContainer);
+
+        LBContainer.add(scrollPane);
+        LBContainer.add(returnHub);
         LBContainer.add(titleLabel);
         getContentPane().add(LBContainer);
 
