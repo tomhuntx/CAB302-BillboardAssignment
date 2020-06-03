@@ -87,7 +87,7 @@ public class BillboardListTable extends DefaultTableModel {
 
                             // Remove selected row
                             int input = JOptionPane.showConfirmDialog(null,
-                                    "Are you sure you want to delete " + model.getValueAt(row, 0),
+                                    "Are you sure you want to delete " + model.getValueAt(row, 0)+"?",
                                     "Billboard Deletion", JOptionPane.OK_CANCEL_OPTION);
                             if (input == JOptionPane.YES_OPTION) {
                                 // Safely adjust table
