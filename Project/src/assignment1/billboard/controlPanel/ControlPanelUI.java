@@ -43,6 +43,9 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     // Saved hex colour of billboard
     String billColour = "#32A852";
 
+    // Saved font for billboards
+    Font billboardFont;
+
     /**
      * Display the Control Panel Login GUI
      * Accepts username and password input and ensures credentials are correct before proceeding.
@@ -123,7 +126,8 @@ public class ControlPanelUI extends JFrame implements ActionListener {
 
     /**
      * Display the Control Panel Hub GUI
-     * ...
+     * Provides four buttons for access to the control panel features.
+     * Create Billboards, List Billboards, Schedule Users, and Edit Users.
      */
     public void ControlPanelHub() {
         // Initialise control panel hub
@@ -256,14 +260,32 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         billboardText = new JTextArea();
         billboardText.setBorder(new LineBorder(Color.BLACK, 1));
         billboardText.setPreferredSize(new Dimension(640,360));
+        billboardFont = titleLabel.getFont().deriveFont(Font.PLAIN, 40f);
+        billboardText.setFont(billboardFont);
+
+        // Font size panel
+        JPanel fontPanel = new JPanel(new GridLayout(3,1));
+        fontPanel.setPreferredSize(new Dimension(75,150));
+        JLabel fontLabel = new JLabel("Font Size", SwingConstants.CENTER);
+        fontPanel.add(fontLabel);
+        fontPanel.setBackground(Color.lightGray);
+        JPanel upPanel = new JPanel();
+        JPanel downPanel = new JPanel();
+        upPanel.add(fontUP);
+        downPanel.add(fontDown);
+        upPanel.setBackground(Color.lightGray);
+        downPanel.setBackground(Color.lightGray);
+        fontUP.setPreferredSize(new Dimension(45,35));
+        fontDown.setPreferredSize(new Dimension(45,35));
+        fontPanel.add(upPanel);
+        fontPanel.add(downPanel);
 
         // RGB Panel
         JPanel RGBPanel = new JPanel(new GridLayout(5,1));
-        JLabel RGBLabel = new JLabel("<html><div style='text-align: center;'>" +
-                                          "Background<br>Colour</div></html>");
+        JLabel RGBLabel = new JLabel("<html>Background<br>Colour</html>", SwingConstants.CENTER);
         RGBPanel.add(RGBLabel);
         RGBPanel.setBackground(Color.lightGray);
-        RGBPanel.setPreferredSize(new Dimension(70,200));
+        RGBPanel.setPreferredSize(new Dimension(80,200));
 
         // R, G, and B text input for RGB Panel
         String[] texts = new String[] {"R:", "G:", "B:"};
@@ -342,13 +364,18 @@ public class ControlPanelUI extends JFrame implements ActionListener {
                 CBContainer);
         springlayout.putConstraint(SpringLayout.EAST, RGBPanel, -25, SpringLayout.EAST, CBContainer);
 
+        // Layout Font Panel
+        springlayout.putConstraint(SpringLayout.VERTICAL_CENTER, fontPanel, 0, SpringLayout.VERTICAL_CENTER,
+                CBContainer);
+        springlayout.putConstraint(SpringLayout.WEST, fontPanel, 30, SpringLayout.WEST, CBContainer);
+
         // Layout Billboard
         springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, billboardText, 0,
                 SpringLayout.HORIZONTAL_CENTER, CBContainer);
         springlayout.putConstraint(SpringLayout.VERTICAL_CENTER, billboardText, -90,
                 SpringLayout.HORIZONTAL_CENTER, CBContainer);
 
-
+        CBContainer.add(fontPanel);
         CBContainer.add(RGBPanel);
         CBContainer.add(titleLabel);
         CBContainer.add(billboardText);
@@ -404,6 +431,32 @@ public class ControlPanelUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null,
                         "Each number must be between 0 and 255.",
                         "Set Background Failed", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    });
+
+    // Button used to return to the hub (used by each control panel section)
+    JButton fontUP = new JButton( new AbstractAction("▲") {
+        @Override
+        public void actionPerformed( ActionEvent e ) {
+            int newSize = billboardFont.getSize() + 4;
+
+            if (newSize < 200) {
+                billboardFont = billboardFont.deriveFont(Font.PLAIN, newSize);
+                billboardText.setFont(billboardFont);
+            }
+        }
+    });
+
+    // Button used to return to the hub (used by each control panel section)
+    JButton fontDown = new JButton( new AbstractAction("▼") {
+        @Override
+        public void actionPerformed( ActionEvent e ) {
+            int newSize = billboardFont.getSize() - 4;
+
+            if (newSize > 5) {
+                billboardFont = billboardFont.deriveFont(Font.PLAIN, newSize);
+                billboardText.setFont(billboardFont);
             }
         }
     });
