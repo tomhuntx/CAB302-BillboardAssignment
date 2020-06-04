@@ -34,8 +34,8 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../CAB302-Group-062-master" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
@@ -47,51 +47,33 @@
       <recent name="C:\Users\tomhu\Desktop\CAB302-BillboardAssignment-master\Billboard\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Display">
-    <configuration name="Display" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="assignment1.billboard.viewer.Display" />
+  <component name="RunManager" selected="Application.DisplayBillboard">
+    <configuration name="ControlPanelManager" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="assignment1.billboard.ControlPanel.ControlPanelManager" />
       <module name="CAB302-BillboardAssignment" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="assignment1.Main" />
-      <module name="CAB302-BillboardAssignment-master" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="assignment1.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+    <configuration name="DisplayBillboard" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="assignment1.billboard.Viewer.DisplayBillboard" />
+      <module name="CAB302-BillboardAssignment" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="billboard.controlPanel.Main" />
-      <module name="CAB302-BillboardAssignment-master" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="billboard.controlPanel.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+    <configuration name="RunServer" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="assignment1.billboard.Server.RunServer" />
+      <module name="CAB302-BillboardAssignment" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Display" />
-      <item itemvalue="Application.Main (1)" />
-      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.DisplayBillboard" />
+      <item itemvalue="Application.RunServer" />
+      <item itemvalue="Application.ControlPanelManager" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Main (1)" />
-        <item itemvalue="Application.Main" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -123,18 +105,18 @@
     </state>
     <state x="361" y="70" key="#Project_Structure/0.0.1536.824@0.0.1536.824" timestamp="1589264586349" />
     <state x="451" y="88" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1589267534009" />
-    <state x="351" y="119" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590910511926">
+    <state x="351" y="119" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591250039844">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state x="351" y="119" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.920@0.0.1440.920" timestamp="1590910511926" />
+    <state x="351" y="119" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.920@0.0.1440.920" timestamp="1591250039844" />
     <state x="885" y="173" key="#com.intellij.ide.util.MemberChooser" timestamp="1590649167992">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
     <state x="885" y="173" key="#com.intellij.ide.util.MemberChooser/0.0.1440.920@0.0.1440.920" timestamp="1590649167992" />
-    <state x="626" y="248" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1590650826022">
+    <state x="626" y="248" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1591250038375">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state x="626" y="248" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1440.920@0.0.1440.920" timestamp="1590650826022" />
+    <state x="626" y="248" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1440.920@0.0.1440.920" timestamp="1591250038375" />
     <state x="579" y="336" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1590910306494">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
@@ -144,51 +126,55 @@
       <screen x="0" y="0" width="1440" height="920" />
     </state>
     <state x="310" y="102" key="#com.intellij.openapi.projectRoots.ui.ProjectJdksEditor/0.0.1440.920@0.0.1440.920" timestamp="1590910303450" />
-    <state x="400" y="123" key="FileChooserDialogImpl" timestamp="1591163910043">
+    <state x="400" y="123" key="FileChooserDialogImpl" timestamp="1591234673650">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state x="400" y="123" key="FileChooserDialogImpl/0.0.1440.920@0.0.1440.920" timestamp="1591163910043" />
+    <state x="400" y="123" key="FileChooserDialogImpl/0.0.1440.920@0.0.1440.920" timestamp="1591234673650" />
     <state x="533" y="139" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1589269098396" />
-    <state width="1397" height="242" key="GridCell.Tab.0.bottom" timestamp="1591145906438">
+    <state width="1397" height="239" key="GridCell.Tab.0.bottom" timestamp="1591269678549">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state width="1397" height="242" key="GridCell.Tab.0.bottom/0.0.1440.920@0.0.1440.920" timestamp="1591145906438" />
+    <state width="1397" height="239" key="GridCell.Tab.0.bottom/0.0.1440.920@0.0.1440.920" timestamp="1591269678549" />
     <state width="1877" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589335874753" />
-    <state width="1397" height="242" key="GridCell.Tab.0.center" timestamp="1591145906438">
+    <state width="1397" height="239" key="GridCell.Tab.0.center" timestamp="1591269678548">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state width="1397" height="242" key="GridCell.Tab.0.center/0.0.1440.920@0.0.1440.920" timestamp="1591145906438" />
+    <state width="1397" height="239" key="GridCell.Tab.0.center/0.0.1440.920@0.0.1440.920" timestamp="1591269678548" />
     <state width="1877" height="279" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589335874753" />
-    <state width="1397" height="242" key="GridCell.Tab.0.left" timestamp="1591145906438">
+    <state width="1397" height="239" key="GridCell.Tab.0.left" timestamp="1591269678538">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state width="1397" height="242" key="GridCell.Tab.0.left/0.0.1440.920@0.0.1440.920" timestamp="1591145906438" />
+    <state width="1397" height="239" key="GridCell.Tab.0.left/0.0.1440.920@0.0.1440.920" timestamp="1591269678538" />
     <state width="1877" height="279" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589335874753" />
-    <state width="1397" height="242" key="GridCell.Tab.0.right" timestamp="1591145906438">
+    <state width="1397" height="239" key="GridCell.Tab.0.right" timestamp="1591269678548">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state width="1397" height="242" key="GridCell.Tab.0.right/0.0.1440.920@0.0.1440.920" timestamp="1591145906438" />
+    <state width="1397" height="239" key="GridCell.Tab.0.right/0.0.1440.920@0.0.1440.920" timestamp="1591269678548" />
     <state width="1877" height="279" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589335874753" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1589267846052">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589267846052" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1589267846052">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589267846052" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1589267846052">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589267846052" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1589267846052">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589267846052" />
-    <state x="330" y="83" key="SettingsEditor" timestamp="1590910368036">
+    <state width="1397" height="300" key="GridCell.Tab.1.bottom" timestamp="1591269599505">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state x="330" y="83" key="SettingsEditor/0.0.1440.920@0.0.1440.920" timestamp="1590910368036" />
+    <state width="1397" height="300" key="GridCell.Tab.1.bottom/0.0.1440.920@0.0.1440.920" timestamp="1591269599505" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589267846052" />
+    <state width="1397" height="300" key="GridCell.Tab.1.center" timestamp="1591269599504">
+      <screen x="0" y="0" width="1440" height="920" />
+    </state>
+    <state width="1397" height="300" key="GridCell.Tab.1.center/0.0.1440.920@0.0.1440.920" timestamp="1591269599504" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589267846052" />
+    <state width="1397" height="300" key="GridCell.Tab.1.left" timestamp="1591269599503">
+      <screen x="0" y="0" width="1440" height="920" />
+    </state>
+    <state width="1397" height="300" key="GridCell.Tab.1.left/0.0.1440.920@0.0.1440.920" timestamp="1591269599503" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589267846052" />
+    <state width="1397" height="300" key="GridCell.Tab.1.right" timestamp="1591269599504">
+      <screen x="0" y="0" width="1440" height="920" />
+    </state>
+    <state width="1397" height="300" key="GridCell.Tab.1.right/0.0.1440.920@0.0.1440.920" timestamp="1591269599504" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589267846052" />
+    <state x="402" y="50" key="SettingsEditor" timestamp="1591234685870">
+      <screen x="0" y="0" width="1440" height="920" />
+    </state>
+    <state x="402" y="50" key="SettingsEditor/0.0.1440.920@0.0.1440.920" timestamp="1591234685870" />
     <state x="440" y="94" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1589269101859" />
     <state x="171" y="81" key="new project wizard" timestamp="1590910722176">
       <screen x="0" y="0" width="1440" height="920" />

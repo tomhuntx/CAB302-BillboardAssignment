@@ -1,4 +1,4 @@
-package assignment1.billboard.controlPanel;
+package assignment1.billboard.ControlPanel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
