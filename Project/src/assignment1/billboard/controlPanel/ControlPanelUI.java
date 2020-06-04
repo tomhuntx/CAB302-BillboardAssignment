@@ -14,10 +14,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class ControlPanelUI extends JFrame implements ActionListener {
 
@@ -695,7 +697,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
 
         // Date Repeating panel
         JPanel repeatPanel = new JPanel();
-        repeatPanel.setPreferredSize(new Dimension(550,50));
+        repeatPanel.setPreferredSize(new Dimension(510,50));
         JLabel repeatLabel = new JLabel("Repeat:");
         repeatLabel.setFont(dateFont);
 
@@ -747,6 +749,9 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         // Confirm button
         scheduleConfirm.setPreferredSize(new Dimension(80,45));
 
+        // Confirm button
+        selectBillboard.setPreferredSize(new Dimension(100,45));
+
         // Layout elements with spring layout
         SpringLayout springlayout = new SpringLayout();
         SBContainer.setLayout(springlayout);
@@ -767,12 +772,15 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         springlayout.putConstraint(SpringLayout.SOUTH, repeatPanel, -20, SpringLayout.SOUTH, SBContainer);
         springlayout.putConstraint(SpringLayout.SOUTH, scheduleConfirm, -55, SpringLayout.SOUTH, SBContainer);
         springlayout.putConstraint(SpringLayout.EAST, scheduleConfirm, -35, SpringLayout.EAST, SBContainer);
+        springlayout.putConstraint(SpringLayout.SOUTH, selectBillboard, -55, SpringLayout.SOUTH, SBContainer);
+        springlayout.putConstraint(SpringLayout.WEST, selectBillboard, 35, SpringLayout.WEST, SBContainer);
 
         // Add components to the container
         SBContainer.add(calPanel);
         SBContainer.add(schPanel);
         SBContainer.add(repeatPanel);
         SBContainer.add(scheduleConfirm);
+        SBContainer.add(selectBillboard);
         SBContainer.add(returnHub);
         SBContainer.add(titleLabel);
         getContentPane().add(SBContainer);
@@ -783,6 +791,14 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         // Set the current complete container
         currentContainer = SBContainer;
     }
+
+    // Button used to confirm the chosen scheduled billboard
+    JButton selectBillboard = new JButton( new AbstractAction("Billboard") {
+        @Override
+        public void actionPerformed( ActionEvent e ) {
+
+        }
+    });
 
     // Button used to confirm the chosen scheduled billboard
     JButton scheduleConfirm = new JButton( new AbstractAction("Confirm") {
@@ -796,6 +812,14 @@ public class ControlPanelUI extends JFrame implements ActionListener {
                 Date selectedTime = (Date)timeSpinner.getValue();
                 SimpleDateFormat format = new SimpleDateFormat("HH:mm");
                 String time = format.format(selectedTime);
+                Date currentDate = new Date();
+                String currentTime = format.format(currentDate);
+
+                // Ensure the time is in the future
+                if (dateBox.getSelectedItem() == dateBox.getItemAt(0) &&
+                    format.parse(time).before(format.parse(currentTime))) {
+                    throw new IllegalArgumentException();
+                }
 
                 // Duration
                 String duration = durationText.getText();
@@ -804,6 +828,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
                     throw new IndexOutOfBoundsException();
                 }
 
+                // Repeat time
                 int repeat;
                 String repeatOutput = "not repeat";
                 for (JRadioButton button : repeatRbs) {
@@ -835,7 +860,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
                 }
 
                 // Output
-                String output = "Are you sure you wish to schedule a billboard on the\n " + date + " at " + time +
+                String output = "Are you sure you wish to schedule a billboard on the\n" + date + " at " + time +
                         " for " + duration + " minutes, that will " + repeatOutput + "?";
 
                 int outputDialog = JOptionPane.showConfirmDialog(null, output,
@@ -852,6 +877,11 @@ public class ControlPanelUI extends JFrame implements ActionListener {
             catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null,
                         "Time durations must be valid numbers only.",
+                        "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
+            }
+            catch (IllegalArgumentException iae) {
+                JOptionPane.showMessageDialog(null,
+                        "Please select a time in the future.",
                         "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
             }
             catch (IndexOutOfBoundsException oob) {

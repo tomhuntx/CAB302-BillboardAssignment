@@ -1,4 +1,4 @@
-package assignment1.billboard.ControlPanel;
+package assignment1.billboard.controlPanel;
 
 import javax.swing.*;
 import java.awt.*;
