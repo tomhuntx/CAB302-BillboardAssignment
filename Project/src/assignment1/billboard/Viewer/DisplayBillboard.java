@@ -10,7 +10,8 @@ public class DisplayBillboard {
      * Create the GUI.
      */
     private static void createAndShowGUI() {
-        new BillboardUI(new DBConnection());
+
+        //new BillboardUI(new DBConnection());
     }
 
     /**
