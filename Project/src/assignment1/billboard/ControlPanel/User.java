@@ -16,7 +16,7 @@ public final class User {
      * Constructor to create a new user with a username and password
      * @param user_username of new user
      * @param user_password of new user
-     * @param user_permissions of new user
+     * @param user_permissions of new user (boolean array of length 4)
      */
     public User(String user_username, String user_password, boolean[] user_permissions) {
         username = user_username;
@@ -65,10 +65,9 @@ public final class User {
 
     /**
      * Change password of user
-     * @param user whose password will be changed
      * @param new_password for user
      */
-    public void changePassword(User user, String new_password) {
-        password = new_password;
+    public void changePassword(String new_password) {
+        this.password = new_password;
     }
 }

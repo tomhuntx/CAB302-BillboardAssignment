@@ -35,4 +35,16 @@ public class ControlPanelManager {
         // Set the location of the UI
         ui.setLocation(new Point(400, 200));
     }
+
+    /**
+     * Logout of account and re-login
+     */
+    protected static void logout() {
+        // Dispose of the current panel and create a new one
+        ui.dispose();
+        ui = new ControlPanelUI();
+
+        // Run the first control panel window
+        SwingUtilities.invokeLater(ui::loginGUI);
+    }
 }
