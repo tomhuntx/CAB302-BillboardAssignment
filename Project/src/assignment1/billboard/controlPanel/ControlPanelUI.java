@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ControlPanelUI extends JFrame implements ActionListener {
 
@@ -51,8 +52,17 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     // Saved font for billboards
     Font billboardFont;
 
-    // Scheduler date
+    // Scheduling billboards items
     JComboBox<String> dateBox;
+    JSpinner timeSpinner;
+    JTextField durationText;
+    ButtonGroup bg;
+    ArrayList<JRadioButton> repeatRbs;
+    JRadioButton rb0;
+    JRadioButton rb1;
+    JRadioButton rb2;
+    JRadioButton rb3;
+    JTextField rb3time;
 
     /**
      * Display the Control Panel Login GUI
@@ -642,17 +652,97 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         // Date Scheduling panel
         JPanel schPanel = new JPanel(new GridLayout(1,4));
         schPanel.setPreferredSize(new Dimension(500,50));
-        schPanel.setBorder(new LineBorder(Color.BLACK, 1));
+        Font dateFont = titleLabel.getFont().deriveFont(Font.PLAIN, 18f);
+
+        // Date combo box
         JPanel datePanel = new JPanel();
         JLabel dateLabel = new JLabel("Date:");
-        dateLabel.setFont(dayFont);
+        dateLabel.setFont(dateFont);
         datePanel.add(dateLabel);
         dateBox = new JComboBox<>(days);
-        dateBox.setPreferredSize(new Dimension(80,38));
+        dateBox.setPreferredSize(new Dimension(80,36));
         dateBox.setFont(dayFont);
         datePanel.add(dateBox);
         schPanel.add(datePanel);
 
+        // Time JSpinner
+        JPanel timePanel = new JPanel();
+        JLabel timeLabel = new JLabel("Time:");
+        timeLabel.setFont(dateFont);
+        timePanel.add(timeLabel);
+        timeSpinner = new JSpinner( new SpinnerDateModel() );
+        JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "HH:mm");
+        timeSpinner.setEditor(timeEditor);
+        timeSpinner.setValue(new Date()); // set to the today's date
+        timeSpinner.setPreferredSize(new Dimension(70,40));
+        timeSpinner.setFont(dateFont);
+        timePanel.add(timeSpinner);
+        schPanel.add(timePanel);
+
+        // Duration text input
+        JPanel durationPanel = new JPanel();
+        JLabel durationLabel = new JLabel("Duration:");
+        durationLabel.setFont(dateFont);
+        durationText = new JTextField("0");
+        durationText.setPreferredSize(new Dimension(32,40));
+        durationText.setFont(dateFont);
+        JLabel minutesLabel = new JLabel("mins");
+        minutesLabel.setFont(dateFont);
+        durationPanel.add(durationLabel);
+        durationPanel.add(durationText);
+        durationPanel.add(minutesLabel);
+        schPanel.add(durationPanel);
+
+        // Date Repeating panel
+        JPanel repeatPanel = new JPanel();
+        repeatPanel.setPreferredSize(new Dimension(550,50));
+        JLabel repeatLabel = new JLabel("Repeat:");
+        repeatLabel.setFont(dateFont);
+
+        // Radio buttons
+        Dimension rbSize = new Dimension(60,40);
+        rb0 = new JRadioButton("None", true);
+        JPanel rb0Panel = new JPanel();
+        rb0Panel.setPreferredSize(rbSize);
+        rb1 = new JRadioButton("Daily");
+        JPanel rb1Panel = new JPanel();
+        rb1Panel.setPreferredSize(rbSize);
+        rb2 = new JRadioButton("Hourly");
+        JPanel rb2Panel = new JPanel();
+        rb2Panel.setPreferredSize(rbSize);
+
+        // Minutes radio button panel
+        JPanel rb3Panel = new JPanel();
+        rb3Panel.setPreferredSize(new Dimension(160,40));
+        rb3 = new JRadioButton("Every");
+        rb3time = new JTextField("0");
+        rb3time.setPreferredSize(new Dimension(25,25));
+        JLabel rb3Label = new JLabel("minutes");
+
+        // Only allow one button to be pressed at any time
+        bg = new ButtonGroup();
+        bg.add(rb0);
+        bg.add(rb1);
+        bg.add(rb2);
+        bg.add(rb3);
+        repeatRbs = new ArrayList<>();
+        repeatRbs.add(rb0);
+        repeatRbs.add(rb1);
+        repeatRbs.add(rb2);
+        repeatRbs.add(rb3);
+
+        // Add radio buttons to their panels and then to the main panel
+        rb0Panel.add(rb0);
+        rb1Panel.add(rb1);
+        rb2Panel.add(rb2);
+        rb3Panel.add(rb3);
+        rb3Panel.add(rb3time);
+        rb3Panel.add(rb3Label);
+        repeatPanel.add(repeatLabel);
+        repeatPanel.add(rb0Panel);
+        repeatPanel.add(rb1Panel);
+        repeatPanel.add(rb2Panel);
+        repeatPanel.add(rb3Panel);
 
         // Confirm button
         scheduleConfirm.setPreferredSize(new Dimension(80,45));
@@ -671,13 +761,17 @@ public class ControlPanelUI extends JFrame implements ActionListener {
                 SBContainer);
         springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, schPanel, 0, SpringLayout.HORIZONTAL_CENTER,
                 SBContainer);
-        springlayout.putConstraint(SpringLayout.SOUTH, schPanel, -70, SpringLayout.SOUTH, SBContainer);
+        springlayout.putConstraint(SpringLayout.SOUTH, schPanel, -75, SpringLayout.SOUTH, SBContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, repeatPanel, 0, SpringLayout.HORIZONTAL_CENTER,
+                SBContainer);
+        springlayout.putConstraint(SpringLayout.SOUTH, repeatPanel, -20, SpringLayout.SOUTH, SBContainer);
         springlayout.putConstraint(SpringLayout.SOUTH, scheduleConfirm, -55, SpringLayout.SOUTH, SBContainer);
         springlayout.putConstraint(SpringLayout.EAST, scheduleConfirm, -35, SpringLayout.EAST, SBContainer);
 
         // Add components to the container
         SBContainer.add(calPanel);
         SBContainer.add(schPanel);
+        SBContainer.add(repeatPanel);
         SBContainer.add(scheduleConfirm);
         SBContainer.add(returnHub);
         SBContainer.add(titleLabel);
@@ -694,7 +788,82 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     JButton scheduleConfirm = new JButton( new AbstractAction("Confirm") {
         @Override
         public void actionPerformed( ActionEvent e ) {
-            String selectedItem = (String) dateBox.getSelectedItem();
+            try {
+                // Date
+                String date = (String) dateBox.getSelectedItem();
+
+                // Time
+                Date selectedTime = (Date)timeSpinner.getValue();
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                String time = format.format(selectedTime);
+
+                // Duration
+                String duration = durationText.getText();
+                int durationInt = Integer.parseInt(duration);
+                if (durationInt <= 0) {
+                    throw new IndexOutOfBoundsException();
+                }
+
+                int repeat;
+                String repeatOutput = "not repeat";
+                for (JRadioButton button : repeatRbs) {
+                    if (button.isSelected()) {
+                        if (button == rb0) {
+
+                            repeatOutput = "not repeat";
+                        } else if (button == rb1) {
+
+                            repeatOutput = "repeat every day";
+
+                        } else if (button == rb2) {
+
+                            repeatOutput = "repeat every hour";
+                        } else if (button == rb3) {
+                            String repeatTime = rb3time.getText();
+
+                            repeat = Integer.parseInt(repeatTime);
+                            repeatOutput = "repeat every " + repeat + " minute(s)";
+
+                            if (repeat == 0) {
+                                repeatOutput = "not repeat";
+                            }
+                            else if (repeat < 0) {
+                                throw new IndexOutOfBoundsException();
+                            }
+                        } else throw new Exception("Could not find selected radio button.");
+                    }
+                }
+
+                // Output
+                String output = "Are you sure you wish to schedule a billboard on the\n " + date + " at " + time +
+                        " for " + duration + " minutes, that will " + repeatOutput + "?";
+
+                int outputDialog = JOptionPane.showConfirmDialog(null, output,
+                        "Scheduling Billboard", JOptionPane.YES_NO_OPTION);
+
+                if (outputDialog == JOptionPane.YES_OPTION){
+
+                    System.out.println("Billboard scheduled.");
+                }
+                else {
+                    System.out.println("User has chosen to cancel scheduling.");
+                }
+            }
+            catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null,
+                        "Time durations must be valid numbers only.",
+                        "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
+            }
+            catch (IndexOutOfBoundsException oob) {
+                JOptionPane.showMessageDialog(null,
+                        "The duration cannot be 0, and no values can be less than 0.",
+                        "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
+            }
+            catch (Exception ex) {
+                JOptionPane.showMessageDialog(null,
+                        "There has been a problem, please try again.",
+                        "Schedule Billboard Failed", JOptionPane.ERROR_MESSAGE);
+            }
 
         }
     });

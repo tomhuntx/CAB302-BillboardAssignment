@@ -1,4 +1,4 @@
-package Viewer;
+package assignment1.billboard.Viewer;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -9,7 +9,6 @@ import org.w3c.dom.*;
 import org.xml.sax.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.MalformedURLException;
