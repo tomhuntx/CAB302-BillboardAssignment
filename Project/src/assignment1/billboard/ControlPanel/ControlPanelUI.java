@@ -2,33 +2,44 @@ package assignment1.billboard.ControlPanel;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class ControlPanelUI extends JFrame {
 
+    // Mock admin user
+    // Please adjust boolean variables to test changes to access of hub items
+    // Adjust name and password to require this info on startup
+    // Would ideally get this info from the database
+    private boolean[] adminPerms = new boolean[] {true, true, true, true};
+    private User admin = new User("username", "password", adminPerms);
+
+    private boolean[] dummyPerms = new boolean[] {true, true, false, false};
+    private User dummyUser = new User("dummy", "12345", dummyPerms);
+
+    // Dummy group of users - this is all the info that would be needed from the database
+    private User[] users = {admin, dummyUser};
+
+    // Current user
+    private static User current_user;
+
     // User input into the login GUI
-    private JTextField username_input;
-    private JPasswordField password_input;
+    JTextField username_input;
+    JPasswordField password_input;
 
     // Output message for confirmation/testing
-    private JLabel outputMessage;
+    JLabel outputMessage;
 
     // Main panels of each control panel section
     JPanel hubContainer;
@@ -133,18 +144,30 @@ public class ControlPanelUI extends JFrame {
     JButton submitLogin = new JButton( new AbstractAction("Submit") {
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Attempt string
+            String username_attempt;
 
             // Get username and password input
-            String username = username_input.getText();
+            username_attempt = username_input.getText();
             String password = String.valueOf(password_input.getPassword());
 
-            // Check if this input is correct and display output
-            if (username.trim().equals("username") && password.trim().equals("password")) {
-                outputMessage.setText("Opening control panel...");
-                ControlPanelManager.login(username);
-            } else {
-                outputMessage.setText(" Incorrect username or password. Please try again.");
+            // Check if this input is matches that of a user account
+            // Currently only checks attempt against the local variable "users"
+            for (User user : users) {
+                if (username_attempt.trim().equals(user.getUsername()) && password.trim().equals(user.getPassword())) {
+                    outputMessage.setText("Opening control panel...");
+                    current_user = user;
+
+                    System.out.println(current_user.getUsername());
+
+                    // Log in with the current user
+                    ControlPanelManager.login(current_user);
+
+                    // Stop the code from running
+                    break;
+                }
             }
+            outputMessage.setText(" Incorrect username or password. Please try again.");
         }
     });
 
@@ -183,8 +206,8 @@ public class ControlPanelUI extends JFrame {
         buttonList.add(scheduleBB);
         buttonList.add(editUsers);
 
+        boolean[] perms = current_user.getPermissions();
         // Add buttons to options panel
-        boolean[] perms = ControlPanelManager.getPermissions();
         for (int i = 0; i < buttonList.size(); i++) {
             JButton button = buttonList.get(i);
             button.setPreferredSize(optionsButtonSize);
@@ -636,7 +659,7 @@ public class ControlPanelUI extends JFrame {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
 
-        // Keep track of the day panels
+        // Keep track of the day panels for later use
         ArrayList<JPanel> dayPanels = new ArrayList<>();
 
         // Create a font for the days
@@ -827,7 +850,7 @@ public class ControlPanelUI extends JFrame {
 
                 // Throw an exception if the time is in the past
                 if (dateBox.getSelectedItem() == dateBox.getItemAt(0) &&
-                    format.parse(time).before(format.parse(currentTime))) {
+                        format.parse(time).before(format.parse(currentTime))) {
                     throw new IllegalArgumentException();
                 }
 
@@ -1027,7 +1050,17 @@ public class ControlPanelUI extends JFrame {
                                 password + "\"?", "Creating User", JOptionPane.YES_NO_OPTION);
 
                 if (outputDialog == JOptionPane.YES_OPTION) {
-                    System.out.println("User has created a new user!");
+
+                    // Establish new permissions
+                    boolean[] perms = new boolean[] {perm1.isSelected(), perm2.isSelected(),
+                            perm3.isSelected(), perm4.isSelected()};
+
+                    // Create a new user
+                    User new_user = new User(username, password, perms);
+
+                    // Output the new user
+                    System.out.println(current_user.getUsername() + " has created the user " + new_user.getUsername()
+                            + " with permissions " + Arrays.toString(perms));
                 }
                 else {
                     System.out.println("User has cancelled user creation.");
