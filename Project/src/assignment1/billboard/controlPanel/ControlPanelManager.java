@@ -49,11 +49,8 @@ public class ControlPanelManager {
      */
     public static boolean[] getPermissions() {
 
-        // would get all valid permissions for the current user
-        // four total (createBB, listBB, scheduleBB, editPermissions)
-
-        // currently have one false bool to show disabled control panel hub buttons
-        permissions = new boolean[]{true, true, true, false};
+        // Currently give users all permissions
+        permissions = new boolean[]{true, true, true, true};
 
         return permissions;
     }

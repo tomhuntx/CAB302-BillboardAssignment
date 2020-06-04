@@ -11,6 +11,8 @@ public class DisplayBillboard {
      */
     private static void createAndShowGUI() {
         Display billboard = new Display();
+
+        //new BillboardUI(new DBConnection());
     }
 
     /**

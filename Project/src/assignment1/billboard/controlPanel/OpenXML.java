@@ -22,11 +22,10 @@ public class OpenXML {
     String filepath = null;
 
     /**
-     * Opens a file chooser window for the CreateBillboards window
+     * Opens a file chooser for the CreateBillboards window
      * Accepts .xml files selected by the user
      * Catches when users select a file that does not exist or if they cancel the search
      */
-
     public void SelectFile() {
         // Set up the file chooser
         chooser.setDialogTitle("Open an .xml billboard file.");
