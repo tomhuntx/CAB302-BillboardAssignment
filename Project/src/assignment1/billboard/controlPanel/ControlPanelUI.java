@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class ControlPanelUI extends JFrame implements ActionListener {
+public class ControlPanelUI extends JFrame {
 
     // User input into the login GUI
     private JTextField username_input;
@@ -38,19 +38,15 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     JPanel EUContainer;
     JPanel currentContainer;
 
-    // Text for billboard
-    JTextPane billboardText;
-
+    // Create billboards items
     // Name of billboard
+    JTextPane billboardText;
     JTextField billName;
     String name_input;
-
     // RGB colours of billboard background
     ArrayList<JTextField> rgb;
-
     // Saved hex colour of billboard
     String billColour = "#32A852";
-
     // Saved font for billboards
     Font billboardFont;
 
@@ -65,6 +61,14 @@ public class ControlPanelUI extends JFrame implements ActionListener {
     JRadioButton rb2;
     JRadioButton rb3;
     JTextField rb3time;
+
+    // Edit users items
+    JTextField uTF;
+    JTextField pTF;
+    JRadioButton perm1;
+    JRadioButton perm2;
+    JRadioButton perm3;
+    JRadioButton perm4;
 
     /**
      * Display the Control Panel Login GUI
@@ -177,7 +181,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         buttonList.add(createBB);
         buttonList.add(listBB);
         buttonList.add(scheduleBB);
-        buttonList.add(editPermissions);
+        buttonList.add(editUsers);
 
         // Add buttons to options panel
         boolean[] perms = ControlPanelManager.getPermissions();
@@ -244,10 +248,15 @@ public class ControlPanelUI extends JFrame implements ActionListener {
             getContentPane().revalidate();
         }
     });
-    JButton editPermissions = new JButton( new AbstractAction("Edit Permissions") {
+    JButton editUsers = new JButton( new AbstractAction("Edit Users") {
         @Override
         public void actionPerformed( ActionEvent e ) {
+            // Move screen to edit users section
+            getContentPane().remove(hubContainer);
+            EditUsers();
 
+            // Revalidate content pane
+            getContentPane().revalidate();
         }
     });
 
@@ -602,7 +611,8 @@ public class ControlPanelUI extends JFrame implements ActionListener {
 
     /**
      * Display the Schedule Billboards section
-     * ...
+     * Users select a date, time, duration, and repeat type
+     * Users then press the confirm button to process the request
      */
     public void ScheduleBillboards() {
         // Create new container and layout
@@ -654,7 +664,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         // Date Scheduling panel
         JPanel schPanel = new JPanel(new GridLayout(1,4));
         schPanel.setPreferredSize(new Dimension(500,50));
-        Font dateFont = titleLabel.getFont().deriveFont(Font.PLAIN, 18f);
+        Font dateFont = titleLabel.getFont().deriveFont(Font.PLAIN, 16f);
 
         // Date combo box
         JPanel datePanel = new JPanel();
@@ -688,7 +698,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         durationText = new JTextField("0");
         durationText.setPreferredSize(new Dimension(32,40));
         durationText.setFont(dateFont);
-        JLabel minutesLabel = new JLabel("mins");
+        JLabel minutesLabel = new JLabel("minutes");
         minutesLabel.setFont(dateFont);
         durationPanel.add(durationLabel);
         durationPanel.add(durationText);
@@ -792,7 +802,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         currentContainer = SBContainer;
     }
 
-    // Button used to confirm the chosen scheduled billboard
+    // Button used to select a billboard for scheduling
     JButton selectBillboard = new JButton( new AbstractAction("Billboard") {
         @Override
         public void actionPerformed( ActionEvent e ) {
@@ -815,7 +825,7 @@ public class ControlPanelUI extends JFrame implements ActionListener {
                 Date currentDate = new Date();
                 String currentTime = format.format(currentDate);
 
-                // Ensure the time is in the future
+                // Throw an exception if the time is in the past
                 if (dateBox.getSelectedItem() == dateBox.getItemAt(0) &&
                     format.parse(time).before(format.parse(currentTime))) {
                     throw new IllegalArgumentException();
@@ -894,13 +904,13 @@ public class ControlPanelUI extends JFrame implements ActionListener {
                         "There has been a problem, please try again.",
                         "Schedule Billboard Failed", JOptionPane.ERROR_MESSAGE);
             }
-
         }
     });
 
     /**
      * Display the Edit Users section
-     * ...
+     * Edit users section for Administrators only
+     * Can create new users, modify existing users, and delete users.
      */
     public void EditUsers() {
         // Create new container and layout
@@ -908,9 +918,59 @@ public class ControlPanelUI extends JFrame implements ActionListener {
 
         // Title label
         JLabel titleLabel = new JLabel("Edit Users", JLabel.CENTER );
-        titleLabel.setPreferredSize(new Dimension(230,100));
+        titleLabel.setPreferredSize(new Dimension(200,100));
         Font largerFont = titleLabel.getFont().deriveFont(Font.PLAIN, 25f);
         titleLabel.setFont(largerFont);
+
+        // Create users panel
+        JPanel cuPanel = new JPanel();
+        cuPanel.setPreferredSize(new Dimension(300,260));
+        JPanel labelPanel = new JPanel();
+        JLabel cuLabel = new JLabel("Create User");
+        Dimension cuDim = new Dimension(200,30);
+        labelPanel.setPreferredSize(cuDim);
+        Font cuFont = cuLabel.getFont().deriveFont(Font.PLAIN, 16f);
+        cuLabel.setFont(cuFont);
+        labelPanel.add(cuLabel);
+        cuPanel.add(labelPanel);
+
+        // Username and password panels
+        JPanel uPanel = new JPanel();
+        JPanel pPanel = new JPanel();
+        uPanel.setPreferredSize(cuDim);
+        pPanel.setPreferredSize(cuDim);
+        uPanel.add(new JLabel("Username: "));
+        uTF = new JTextField();
+        pPanel.add(new JLabel("Password: "));
+        pTF = new JTextField();
+        Dimension tfSize = new Dimension(100,20);
+        uTF.setPreferredSize(tfSize);
+        pTF.setPreferredSize(tfSize);
+        uPanel.add(uTF);
+        pPanel.add(pTF);
+        cuPanel.add(uPanel);
+        cuPanel.add(pPanel);
+
+        // Permissions panel
+        JPanel permPanel = new JPanel();
+        permPanel.setPreferredSize(new Dimension(250,100));
+        JLabel permLabel = new JLabel("Permissions:");
+        permLabel.setPreferredSize(new Dimension(80,20));
+        permPanel.add(permLabel);
+        JPanel rbPanel = new JPanel(new GridLayout(4,1));
+        perm1 = new JRadioButton("Create Billboards");
+        rbPanel.add(perm1);
+        perm2 = new JRadioButton("Edit All Billboards");
+        rbPanel.add(perm2);
+        perm3 = new JRadioButton("Schedule Billboards");
+        rbPanel.add(perm3);
+        perm4 = new JRadioButton("Edit Users");
+        rbPanel.add(perm4);
+        permPanel.add(rbPanel);
+        cuPanel.add(permPanel);
+
+        // Confirm button
+        cuPanel.add(createUser);
 
         // Hub button
         returnHub.setPreferredSize(new Dimension(100,50));
@@ -923,18 +983,56 @@ public class ControlPanelUI extends JFrame implements ActionListener {
         springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, EUContainer);
         springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0, SpringLayout.HORIZONTAL_CENTER,
                 EUContainer);
+        springlayout.putConstraint(SpringLayout.NORTH, cuPanel, 80, SpringLayout.NORTH, EUContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, cuPanel, 0, SpringLayout.HORIZONTAL_CENTER,
+                EUContainer);
 
         // Add components to the container
+        EUContainer.add(cuPanel);
         EUContainer.add(returnHub);
         EUContainer.add(titleLabel);
-        getContentPane().add(SBContainer);
+        getContentPane().add(EUContainer);
 
         // Set the current complete container
         currentContainer = EUContainer;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    // Button used to create a new user
+    JButton createUser = new JButton( new AbstractAction("Create") {
+        @Override
+        public void actionPerformed( ActionEvent e ) {
+            String username = uTF.getText();
+            String password = pTF.getText();
 
-    }
+            // Ensure password is valid
+            if (username.isBlank() || password.isBlank()) {
+                JOptionPane.showMessageDialog(null,
+                        "Please enter a username and password",
+                        "User Creation Failed", JOptionPane.WARNING_MESSAGE);
+            }
+            else if (password.length() < 4) {
+                JOptionPane.showMessageDialog(null,
+                        "Please choose a more secure password.",
+                        "Scheduling Billboard", JOptionPane.WARNING_MESSAGE);
+            }
+            else if (username.length() >= 20) {
+                JOptionPane.showMessageDialog(null,
+                        "Username must be less than 20 characters.",
+                        "User Creation Failed", JOptionPane.WARNING_MESSAGE);
+            }
+            else {
+                // Prompt to create a user
+                int outputDialog = JOptionPane.showConfirmDialog(null,
+                        "Do you wish to create the user \"" + username + "\" with the password \"" +
+                                password + "\"?", "Creating User", JOptionPane.YES_NO_OPTION);
+
+                if (outputDialog == JOptionPane.YES_OPTION) {
+                    System.out.println("User has created a new user!");
+                }
+                else {
+                    System.out.println("User has cancelled user creation.");
+                }
+            }
+        }
+    });
 }
