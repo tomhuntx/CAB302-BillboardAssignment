@@ -1,4 +1,4 @@
-package assignment1.billboard;
+package assignment1.billboard.Viewer;
 
 import assignment1.billboard.Viewer.BillboardContents;
 import assignment1.billboard.Viewer.Display;
