@@ -15,14 +15,23 @@ public class BillboardListTable extends DefaultTableModel {
             { "Billboard1", "Jim", "PREV", "EDIT", "DEL" },
             { "Billboard2 Longer Name 3000", "Fred",  "PREV", "EDIT", "DEL"},
             { "Billboard3", "Another name here",  "PREV", "EDIT", "DEL"},
-            { "Billboard4", "A fourth dude",  "PREV", "EDIT", "DEL"}
+            { "Billboard4", "A fourth dude",  "PREV", "EDIT", "DEL",},
+            { "Billboard1", "Jim", "PREV", "EDIT", "DEL" },
+            { "Billboard2 Longer Name 3000", "Fred",  "PREV", "EDIT", "DEL"},
+            { "Billboard3", "Another name here",  "PREV", "EDIT", "DEL"},
+            { "Billboard4", "A fourth dude",  "PREV", "EDIT", "DEL",},
+            { "Billboard1", "Jim", "PREV", "EDIT", "DEL" },
+            { "Billboard2 Longer Name 3000", "Fred",  "PREV", "EDIT", "DEL"},
+            { "Billboard3", "Another name here",  "PREV", "EDIT", "DEL"},
+            { "Billboard4", "A fourth dude",  "PREV", "EDIT", "DEL",},
+            { "Billboard1", "Jim", "PREV", "EDIT", "DEL" },
+            { "Billboard2 Longer Name 3000", "Fred",  "PREV", "EDIT", "DEL"},
+            { "Billboard3", "Another name here",  "PREV", "EDIT", "DEL"},
+            { "Billboard4", "A fourth dude",  "PREV", "EDIT", "DEL",}
     };
 
     private String tableName;
     private static JButton currentButton = new JButton();
-    private static JButton prevButton = new JButton();
-    private static JButton delButton = new JButton();
-    private static JButton editButton = new JButton();
 
     BillboardListTable(String type) {
         super(data, columns);

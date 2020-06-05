@@ -2,13 +2,10 @@ package assignment1.billboard.ControlPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.text.MessageFormat;
 
 public class ControlPanelManager {
 
-    public static String current_user;
-    public static boolean[] permissions;
     private static ControlPanelUI ui;
 
     /**
@@ -19,20 +16,16 @@ public class ControlPanelManager {
         ui = new ControlPanelUI();
 
         // Run the first control panel window
-        //SwingUtilities.invokeLater(ui::loginGUI);
-
-        // To skip to and test control panel
-        SwingUtilities.invokeLater(ui::ControlPanelHub);
+        SwingUtilities.invokeLater(ui::loginGUI);
     }
 
     /**
      * Login when successful
      * Successful if username and password are correct
-     * @param userID of current control panel user
+     * @param user of control panel
      */
-    protected static void login(String userID) {
-        current_user = userID;
-        System.out.println(MessageFormat.format("{0} has logged in successfully...", current_user));
+    protected static void login(User user) {
+        System.out.println(MessageFormat.format("{0} has logged in successfully...", user.getUsername()));
 
         // Dispose of the current panel and create a new one
         ui.dispose();
@@ -44,14 +37,14 @@ public class ControlPanelManager {
     }
 
     /**
-     * Get all valid permissions from user
-     * @return a boolean array of permissions (createBB, listBB, scheduleBB, editPermissions)
+     * Logout of account and create a new login window
      */
-    public static boolean[] getPermissions() {
+    protected static void logout() {
+        // Dispose of the current panel and create a new one
+        ui.dispose();
+        ui = new ControlPanelUI();
 
-        // Currently give users all permissions
-        permissions = new boolean[]{true, true, true, true};
-
-        return permissions;
+        // Run the first control panel window
+        SwingUtilities.invokeLater(ui::loginGUI);
     }
 }

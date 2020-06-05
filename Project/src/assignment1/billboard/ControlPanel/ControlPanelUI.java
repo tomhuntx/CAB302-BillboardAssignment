@@ -2,33 +2,45 @@ package assignment1.billboard.ControlPanel;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class ControlPanelUI extends JFrame {
 
+    // Mock admin user
+    // Please adjust boolean variables to test changes to access of hub items
+    // Adjust name and password to require this info on startup
+    // Would ideally get this info from the database
+    private static boolean[] adminPerms = new boolean[] {true, true, true, true};
+    private static User admin = new User("username", "password", adminPerms);
+
+    // Mock dummy with create billboards and schedule billboards permissions only
+    private static boolean[] dummyPerms = new boolean[] {true, true, false, false};
+    private static User dummy = new User("dummy", "12345", dummyPerms);
+
+    // Dummy group of users - this is all the info that would be needed from the database
+    private static ArrayList<User> users = new ArrayList<>(Arrays.asList(admin, dummy));
+
+    // Current user
+    private static User current_user;
+
     // User input into the login GUI
-    private JTextField username_input;
-    private JPasswordField password_input;
+    JTextField username_input;
+    JPasswordField password_input;
 
     // Output message for confirmation/testing
-    private JLabel outputMessage;
+    JLabel outputMessage;
 
     // Main panels of each control panel section
     JPanel hubContainer;
@@ -75,8 +87,10 @@ public class ControlPanelUI extends JFrame {
      * Accepts username and password input and ensures credentials are correct before proceeding.
      */
     public void loginGUI()  {
-        //Create the control panel window.
+        // Create the control panel window
         setTitle("Control Panel");
+
+        // Ensure the window exits on close
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Title label
@@ -133,18 +147,28 @@ public class ControlPanelUI extends JFrame {
     JButton submitLogin = new JButton( new AbstractAction("Submit") {
         @Override
         public void actionPerformed(ActionEvent e) {
+            // Attempt string
+            String username_attempt;
 
             // Get username and password input
-            String username = username_input.getText();
+            username_attempt = username_input.getText();
             String password = String.valueOf(password_input.getPassword());
 
-            // Check if this input is correct and display output
-            if (username.trim().equals("username") && password.trim().equals("password")) {
-                outputMessage.setText("Opening control panel...");
-                ControlPanelManager.login(username);
-            } else {
-                outputMessage.setText(" Incorrect username or password. Please try again.");
+            // Check if this input is matches that of a user account
+            // Currently only checks attempt against the local variable "users"
+            for (User user : users) {
+                if (username_attempt.trim().equals(user.getUsername()) && password.trim().equals(user.getPassword())) {
+                    outputMessage.setText("Opening control panel...");
+                    current_user = user;
+
+                    // Log in with the current user
+                    ControlPanelManager.login(current_user);
+
+                    // Stop the code from running
+                    break;
+                }
             }
+            outputMessage.setText(" Incorrect username or password. Please try again.");
         }
     });
 
@@ -155,15 +179,13 @@ public class ControlPanelUI extends JFrame {
      */
     public void ControlPanelHub() {
         // Initialise control panel hub
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Control Panel");
+
+        // Ensure the window exits on close
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create hub container and layout
         hubContainer = new JPanel();
-        FlowLayout layout = new FlowLayout();
-        layout.setHgap(0);
-        layout.setVgap(10);
-        hubContainer.setLayout(layout);
 
         // Title label
         JLabel titleLabel = new JLabel("Control Panel Hub", JLabel.CENTER);
@@ -183,8 +205,8 @@ public class ControlPanelUI extends JFrame {
         buttonList.add(scheduleBB);
         buttonList.add(editUsers);
 
+        boolean[] perms = current_user.getPermissions();
         // Add buttons to options panel
-        boolean[] perms = ControlPanelManager.getPermissions();
         for (int i = 0; i < buttonList.size(); i++) {
             JButton button = buttonList.get(i);
             button.setPreferredSize(optionsButtonSize);
@@ -197,9 +219,42 @@ public class ControlPanelUI extends JFrame {
             }
         }
 
+        // Change password panel
+        JPanel cpPanel = new JPanel();
+        cpPanel.setPreferredSize(new Dimension(140,200));
+        JLabel userLabel = new JLabel("Current User: " + current_user.getUsername());
+        Font userFont = userLabel.getFont().deriveFont(Font.BOLD, 12f);
+
+        userLabel.setFont(userFont);
+        changePassword.setFont(userFont);
+        changePassword.setPreferredSize(new Dimension(140,20));
+
+        cpPanel.add(userLabel);
+        cpPanel.add(changePassword);
+
+        // Layout Title
+        SpringLayout springlayout = new SpringLayout();
+        hubContainer.setLayout(springlayout);
+        springlayout.putConstraint(SpringLayout.NORTH, titleLabel, 10, SpringLayout.NORTH, hubContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, titleLabel, 0,
+                SpringLayout.HORIZONTAL_CENTER, hubContainer);
+
+        // Layout Main buttons
+        springlayout.putConstraint(SpringLayout.NORTH, optionsPanel, 120, SpringLayout.NORTH, hubContainer);
+        springlayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, optionsPanel, 0,
+                SpringLayout.HORIZONTAL_CENTER, hubContainer);
+
+        // Layout Top Buttons
+        springlayout.putConstraint(SpringLayout.NORTH, cpPanel, 20, SpringLayout.NORTH, hubContainer);
+        springlayout.putConstraint(SpringLayout.EAST, cpPanel, -20, SpringLayout.EAST, hubContainer);
+        springlayout.putConstraint(SpringLayout.NORTH, logout, 20, SpringLayout.NORTH, hubContainer);
+        springlayout.putConstraint(SpringLayout.WEST, logout, 20, SpringLayout.WEST, hubContainer);
+
         // Add components to frame
         hubContainer.add(titleLabel);
         hubContainer.add(optionsPanel);
+        hubContainer.add(cpPanel);
+        hubContainer.add(logout);
         getContentPane().add(hubContainer);
 
         // Disable resizability
@@ -257,6 +312,71 @@ public class ControlPanelUI extends JFrame {
 
             // Revalidate content pane
             getContentPane().revalidate();
+        }
+    });
+
+    // Button used to change the current user's password
+    JButton changePassword = new JButton( new AbstractAction("Change Password") {
+        @Override
+        public void actionPerformed( ActionEvent e )  {
+            // Custom change password panel
+            JPanel passPanel = new JPanel();
+            JLabel passLabel = new JLabel("New Password:");
+            JPasswordField newPass = new JPasswordField(10);
+            passPanel.add(passLabel);
+            passPanel.add(newPass);
+            int option = JOptionPane.showOptionDialog(null, passPanel, "Change Password",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, null, null);
+
+            // Pressing yes button
+            if (option == 0)
+            {
+                char[] input = newPass.getPassword();
+                String password = new String(input);
+                if (password.isBlank()) {
+                    JOptionPane.showMessageDialog(null,
+                            "Please enter a new password or press cancel.",
+                            "User Creation Failed", JOptionPane.WARNING_MESSAGE);
+                }
+                else if (password.length() < 4) {
+                    JOptionPane.showMessageDialog(null,
+                            "Please enter a more secure password.",
+                            "User Creation Failed", JOptionPane.WARNING_MESSAGE);
+                }
+                // If successful
+                else {
+                    current_user.changePassword(password);
+
+                    // Change password of actual saved profiles
+                    // This code would be replaced with a database change
+                    if (current_user.getUsername().equals(admin.getUsername())) {
+                        admin.changePassword(password);
+                    }
+                    else if (current_user.getUsername().equals(dummy.getUsername())) {
+                        dummy.changePassword(password);
+                    }
+
+                    System.out.println("Changed password successfully.");
+                }
+            }
+        }
+    });
+
+    // Button used to logout from current user
+    JButton logout = new JButton( new AbstractAction("Logout") {
+        @Override
+        public void actionPerformed( ActionEvent e ) {
+
+            // Prompt to logout
+            int logoutPrompt = JOptionPane.showConfirmDialog(null,
+                    "Are you sure you wish to logout?", "Warning", JOptionPane.YES_NO_OPTION);
+
+            if (logoutPrompt == JOptionPane.YES_OPTION) {
+                // Log in with the current user
+                current_user = null;
+                ControlPanelManager.logout();
+            }
         }
     });
 
@@ -573,7 +693,7 @@ public class ControlPanelUI extends JFrame {
         // Customise the table spacing
         table.setRowHeight(30);
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(150);
+        columnModel.getColumn(0).setPreferredWidth(130);
         columnModel.getColumn(1).setPreferredWidth(100);
         columnModel.getColumn(2).setPreferredWidth(80);
 
@@ -636,7 +756,7 @@ public class ControlPanelUI extends JFrame {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
 
-        // Keep track of the day panels
+        // Keep track of the day panels for later use
         ArrayList<JPanel> dayPanels = new ArrayList<>();
 
         // Create a font for the days
@@ -827,19 +947,19 @@ public class ControlPanelUI extends JFrame {
 
                 // Throw an exception if the time is in the past
                 if (dateBox.getSelectedItem() == dateBox.getItemAt(0) &&
-                    format.parse(time).before(format.parse(currentTime))) {
-                    throw new IllegalArgumentException();
+                        format.parse(time).before(format.parse(currentTime))) {
+                    throw new IllegalArgumentException("Please select a time in the future.");
                 }
 
                 // Duration
                 String duration = durationText.getText();
                 int durationInt = Integer.parseInt(duration);
                 if (durationInt <= 0) {
-                    throw new IndexOutOfBoundsException();
+                    throw new IllegalArgumentException("The duration cannot be 0, and no values can be less than 0.");
                 }
 
                 // Repeat time
-                int repeat;
+                int repeat = 0;
                 String repeatOutput = "not repeat";
                 for (JRadioButton button : repeatRbs) {
                     if (button.isSelected()) {
@@ -863,7 +983,13 @@ public class ControlPanelUI extends JFrame {
                                 repeatOutput = "not repeat";
                             }
                             else if (repeat < 0) {
-                                throw new IndexOutOfBoundsException();
+                                throw new IllegalArgumentException(
+                                        "The duration cannot be 0, and no values can be less than 0.");
+                            }
+                            // Ensure repeat time cannot be more than duration
+                            if (durationInt > repeat) {
+                                throw new IllegalArgumentException(
+                                        "Scheduling duration cannot be longer than the Billboard's repeat time.");
                             }
                         } else throw new Exception("Could not find selected radio button.");
                     }
@@ -886,18 +1012,12 @@ public class ControlPanelUI extends JFrame {
             }
             catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null,
-                        "Time durations must be valid numbers only.",
+                        "Please enter numerical values only",
                         "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
             }
             catch (IllegalArgumentException iae) {
                 JOptionPane.showMessageDialog(null,
-                        "Please select a time in the future.",
-                        "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
-            }
-            catch (IndexOutOfBoundsException oob) {
-                JOptionPane.showMessageDialog(null,
-                        "The duration cannot be 0, and no values can be less than 0.",
-                        "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
+                        iae.getMessage(), "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
             }
             catch (Exception ex) {
                 JOptionPane.showMessageDialog(null,
@@ -1015,9 +1135,9 @@ public class ControlPanelUI extends JFrame {
                         "Please choose a more secure password.",
                         "Scheduling Billboard", JOptionPane.WARNING_MESSAGE);
             }
-            else if (username.length() >= 20) {
+            else if (username.length() >= 15) {
                 JOptionPane.showMessageDialog(null,
-                        "Username must be less than 20 characters.",
+                        "Username must be less than 15 characters.",
                         "User Creation Failed", JOptionPane.WARNING_MESSAGE);
             }
             else {
@@ -1027,7 +1147,20 @@ public class ControlPanelUI extends JFrame {
                                 password + "\"?", "Creating User", JOptionPane.YES_NO_OPTION);
 
                 if (outputDialog == JOptionPane.YES_OPTION) {
-                    System.out.println("User has created a new user!");
+
+                    // Establish new permissions
+                    boolean[] perms = new boolean[] {perm1.isSelected(), perm2.isSelected(),
+                            perm3.isSelected(), perm4.isSelected()};
+
+                    // Create a new user
+                    User new_user = new User(username, password, perms);
+
+                    // Add new user to users list
+                    users.add(new_user);
+
+                    // Output the new user
+                    System.out.println(current_user.getUsername() + " has created the user " + new_user.getUsername()
+                            + " with permissions " + Arrays.toString(perms));
                 }
                 else {
                     System.out.println("User has cancelled user creation.");
