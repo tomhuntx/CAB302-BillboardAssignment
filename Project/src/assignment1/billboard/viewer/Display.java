@@ -17,8 +17,15 @@ import java.util.Random;
  * contains example xml strings
  */
 public class Display{
+    /*
+     * not used
+     */
     private Properties properties = new Properties();
     private static Connection instance = null;
+
+    /*
+     * BillboardContents object
+     */
     public BillboardContents billboardContents;
 
     /**
@@ -28,15 +35,23 @@ public class Display{
         /**
          * Server connection timer not functional
          */
-        //timedServerConnection();
         billboardContents = null;
     }
 
+    /**
+     * Creates and shows the gui
+     */
     public void runDisplay(){
+        //timedServerConnection();
+
         billboardContents = new BillboardContents(newXML());
         billboardContents.showGUI();
     }
 
+    /**
+     * delays the display from resetting
+     * @param delay time of delay in milliseconds
+     */
     public void delayDisplay(int delay){
         try {
             Thread.sleep(delay);
@@ -48,6 +63,7 @@ public class Display{
 
     /**
      * Server connection timer
+     * not functional
      */
     public void timedServerConnection(int delay){
         connectToServer();
@@ -58,6 +74,7 @@ public class Display{
 
     /**
      * Connects to server
+     * not functional
      */
     public void connectToServer(){
         FileInputStream in = null;
@@ -164,5 +181,4 @@ public class Display{
         out = billboards[random.nextInt(billboards.length)];
         return out;
     }
-
 }

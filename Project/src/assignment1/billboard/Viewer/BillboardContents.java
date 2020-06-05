@@ -19,8 +19,9 @@ import java.net.URL;
 import java.util.Base64;
 
 public class BillboardContents extends JFrame{
-    private String xmlString = null;
+    private String xmlString;
     private Node node = null;
+    private Dimension screen;
     private JPanel displayPanel = new JPanel();
     private JLabel messageLabel = new JLabel("", SwingConstants.CENTER);
     private JLabel informationLabel = new JLabel("", SwingConstants.CENTER);
@@ -32,19 +33,17 @@ public class BillboardContents extends JFrame{
     private BufferedImage image;
 
     /**
-     * Instantiates new GUI
+     * Initialises variables and frame
      *
      * @param xmlInput string of xml code
      */
     public BillboardContents(String xmlInput){
-        /*
-         * Initialise variables
-         */
         super("Billboard");
         xmlString = xmlInput;
         msg = false;
         inf = false;
         pic = false;
+        screen = Toolkit.getDefaultToolkit().getScreenSize();
         int DEF_SIZE = 46;
         int DEF_INF_SIZE = 30;
         String DEF_FONT = "Arial";
@@ -54,11 +53,11 @@ public class BillboardContents extends JFrame{
         informationLabel.setFont(defInfFont);
         setUndecorated(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setExtendedState(MAXIMIZED_BOTH);
+        setSize(screen.width, screen.height);
     }
 
     /**
-     * Shows GUI wof billboard
+     * Shows GUI of billboard
      */
     public void showGUI(){
         exitEvents();
@@ -79,7 +78,7 @@ public class BillboardContents extends JFrame{
     /**
      * Adds adapter for events to exit
      */
-    public void exitEvents(){
+    private void exitEvents(){
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -132,7 +131,7 @@ public class BillboardContents extends JFrame{
      * Updates frame attributes
      *
      */
-    public void updateAttributes(){
+    private void updateAttributes(){
         String key = node.getNodeName();
         String value = node.getTextContent();
         if(key == "message"){
@@ -189,15 +188,14 @@ public class BillboardContents extends JFrame{
     /**
      * Places labels accordingly
      */
-    public void labelPlacement(){
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    private void labelPlacement(){
         int QUARTER = 4;
         int THIRD = 3;
         Dimension picScreen = new Dimension(screen.width / QUARTER, screen.height / QUARTER);
         Dimension twoScreen = new Dimension(screen.width / THIRD, screen.height / THIRD);
 
         /*
-         * Create new GridBagLayout
+         * Create new GridLayout
          */
         int ROWS = 3;
         int COLS = 1;

@@ -1,7 +1,5 @@
 package assignment1.billboard.Viewer;
 
-import javax.swing.SwingUtilities;
-
 /**
  * Main Class DisplayBillboard
  * Creates threads within thread to maintain the program
@@ -19,7 +17,7 @@ public class DisplayBillboard {
     private static final int DELAY = 15000;
 
     /*
-     * Display class instance
+     * Display class object
      */
     private static Display display;
 
@@ -29,7 +27,6 @@ public class DisplayBillboard {
     private static void createAndShowGUI() {
         display = new Display();
         for (int i = 0; i < MAX; i++){
-            System.out.println(i);
             display.runDisplay();
             display.delayDisplay(DELAY);
         }
@@ -40,8 +37,6 @@ public class DisplayBillboard {
      * @param args string arguments of main function
      */
     public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
         createAndShowGUI();
     }
 }
