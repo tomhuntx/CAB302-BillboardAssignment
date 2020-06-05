@@ -7,10 +7,10 @@ import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 
 /**
+ * ControlPanelTest Class
  * JUnit testing for the control panel login, users, and permissions
  * Covers testing for the ControlPanelManager and the ControlPanelUI classes
  */
-
 public class ControlPanelTest {
 
     // Control panel UI

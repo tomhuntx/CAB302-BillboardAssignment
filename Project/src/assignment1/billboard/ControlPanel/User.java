@@ -1,7 +1,8 @@
 package assignment1.billboard.ControlPanel;
 
 /**
- * Class for creating and managing users and their details
+ * User Class
+ * Allows for the creation and managing users and their details
  */
 public final class User {
 

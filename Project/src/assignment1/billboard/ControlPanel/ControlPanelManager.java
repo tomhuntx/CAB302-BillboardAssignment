@@ -6,6 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.MessageFormat;
 
+/**
+ * ControlPanelManager class
+ * Creates and disposes of the Control Panel UI
+ * Acts as the starting point for the Control Panel
+ */
 public class ControlPanelManager {
 
     private static ControlPanelUI ui;
