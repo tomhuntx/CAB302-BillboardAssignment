@@ -10,29 +10,48 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Random;
 
-
+/**
+ * Class Display
+ * performs the creation of viewer GUI
+ * will also perform connection to server
+ * contains example xml strings
+ */
 public class Display{
     private Properties properties = new Properties();
     private static Connection instance = null;
-    private BillboardContents billboardContents;
-    private String xmlString;
+    public BillboardContents billboardContents;
 
     /**
      * Display constructor
      */
     public Display(){
-        timedServerConnection();
-        xmlString = newXML();
-        System.out.println(xmlString);
-        billboardContents = new BillboardContents(xmlString);
+        /**
+         * Server connection timer not functional
+         */
+        //timedServerConnection();
+        billboardContents = null;
+    }
+
+    public void runDisplay(){
+        billboardContents = new BillboardContents(newXML());
+        billboardContents.showGUI();
+    }
+
+    public void delayDisplay(int delay){
+        try {
+            Thread.sleep(delay);
+            billboardContents.resetGUI();
+        }catch(InterruptedException e) {
+            System.out.println(e);
+        }
     }
 
     /**
      * Server connection timer
      */
-    public void timedServerConnection(){
+    public void timedServerConnection(int delay){
         connectToServer();
-        new Timer(15000, e ->{
+        new Timer(delay, e ->{
             connectToServer();
         }).start();
     }
@@ -71,6 +90,7 @@ public class Display{
      * @return returns string of XML
      */
     public String newXML() {
+        String out = null;
         Random random = new Random();
         String[] billboards = new String[]{"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<billboard>\n" +
@@ -141,6 +161,8 @@ public class Display{
                         "<billboard background=\"#8996FF\">\n" +
                         "    <picture url=\"https://cloudstor.aarnet.edu.au/plus/s/5fhToroJL0nMKvB/download\" />\n" +
                         "</billboard>"};
-        return billboards[random.nextInt(billboards.length)];
+        out = billboards[random.nextInt(billboards.length)];
+        return out;
     }
+
 }

@@ -17,9 +17,10 @@ import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
-import java.util.Properties;
 
 public class BillboardContents extends JFrame{
+    private String xmlString = null;
+    private Node node = null;
     private JPanel displayPanel = new JPanel();
     private JLabel messageLabel = new JLabel("", SwingConstants.CENTER);
     private JLabel informationLabel = new JLabel("", SwingConstants.CENTER);
@@ -33,47 +34,46 @@ public class BillboardContents extends JFrame{
     /**
      * Instantiates new GUI
      *
-     * @param xmlString string of xml code
+     * @param xmlInput string of xml code
      */
-    public BillboardContents(String xmlString){
+    public BillboardContents(String xmlInput){
         /*
          * Initialise variables
          */
+        super("Billboard");
+        xmlString = xmlInput;
         msg = false;
         inf = false;
         pic = false;
-        Font defFont = new Font("Arial", Font.BOLD, 46);
+        int DEF_SIZE = 46;
+        int DEF_INF_SIZE = 30;
+        String DEF_FONT = "Arial";
+        Font defFont = new Font(DEF_FONT, Font.BOLD, DEF_SIZE);
         messageLabel.setFont(defFont);
-
-        /*
-         * Initialise GUI frame
-         */
-        setTitle("Billboard");
+        Font defInfFont = new Font(DEF_FONT, Font.PLAIN, DEF_INF_SIZE);
+        informationLabel.setFont(defInfFont);
         setUndecorated(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setExtendedState(MAXIMIZED_BOTH);
+    }
+
+    /**
+     * Shows GUI wof billboard
+     */
+    public void showGUI(){
         exitEvents();
-
-        /*
-         * Gets attributes of new billboard
-         */
-        updateBillboard(xmlString);
-
-        /*
-         * Place attributes on displayPanel
-         */
+        updateBillboard();
         labelPlacement();
-
-        /*
-         * Add displayPanel to GUI frame
-         */
         add(displayPanel, BorderLayout.CENTER);
-
-        /*
-         * Update GUI
-         */
         pack();
         setVisible(true);
+    }
+
+    /**
+     * Closes GUI
+     */
+    public void resetGUI(){
+        dispose();
     }
 
     /**
@@ -99,9 +99,8 @@ public class BillboardContents extends JFrame{
     /**
      * Updates billboard
      *
-     * @param xmlString string of XML code
      */
-    private void updateBillboard(String xmlString){
+    private void updateBillboard(){
         try {
             DocumentBuilderFactory dBFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dBFactory.newDocumentBuilder();
@@ -114,36 +113,26 @@ public class BillboardContents extends JFrame{
             }
             NodeList nodeList = document.getDocumentElement().getChildNodes();
             for(int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                updateAttributes(node);
+                node = nodeList.item(i);
+                updateAttributes();
             }
         } catch (ParserConfigurationException e) {
             errorLabel.setText(e.getMessage());
             displayPanel.add(errorLabel);
-            add(displayPanel, BorderLayout.CENTER);
-            pack();
-            setVisible(true);
         } catch (SAXException e) {
             errorLabel.setText(e.getMessage());
             displayPanel.add(errorLabel);
-            add(displayPanel, BorderLayout.CENTER);
-            pack();
-            setVisible(true);
         } catch (IOException e) {
             errorLabel.setText(e.getMessage());
             displayPanel.add(errorLabel);
-            add(displayPanel, BorderLayout.CENTER);
-            pack();
-            setVisible(true);
         }
     }
 
     /**
      * Updates frame attributes
      *
-     * @param node attribute
      */
-    public void updateAttributes(Node node){
+    public void updateAttributes(){
         String key = node.getNodeName();
         String value = node.getTextContent();
         if(key == "message"){
@@ -202,13 +191,17 @@ public class BillboardContents extends JFrame{
      */
     public void labelPlacement(){
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension picScreen = new Dimension(screen.width / 4, screen.height / 4);
-        Dimension twoScreen = new Dimension(screen.width / 3, screen.height / 3);
+        int QUARTER = 4;
+        int THIRD = 3;
+        Dimension picScreen = new Dimension(screen.width / QUARTER, screen.height / QUARTER);
+        Dimension twoScreen = new Dimension(screen.width / THIRD, screen.height / THIRD);
 
         /*
          * Create new GridBagLayout
          */
-        GridLayout gridLayout = new GridLayout(3,1);
+        int ROWS = 3;
+        int COLS = 1;
+        GridLayout gridLayout = new GridLayout(ROWS,COLS);
         displayPanel.setLayout(gridLayout);
 
         /*

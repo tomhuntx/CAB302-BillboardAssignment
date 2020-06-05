@@ -2,10 +2,37 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24f91833-98cc-4cd1-9e4a-fab9038db501" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/db.props" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assignment1/billboard/Server/DBConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/CAB302-BillboardAssignment-master.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302-BillboardAssignment-master.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Project/src/assignment1/billboard/ViewerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CAB302-BillboardAssignment.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302-BillboardAssignment.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/src/assignment1/billboard/Viewer/BillboardContents.java" beforeDir="false" afterPath="$PROJECT_DIR$/Project/src/assignment1/billboard/Viewer/BillboardContents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/src/assignment1/billboard/Viewer/DisplayBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/Project/src/assignment1/billboard/Viewer/DisplayBillboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Project/src/assignment1/billboard/Viewer/ViewerTester.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/BillboardListTable$ButtonEditor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/BillboardListTable$ButtonEditor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/BillboardListTable$ButtonRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/BillboardListTable$ButtonRenderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/BillboardListTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/BillboardListTable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$11.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$13.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$14.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$15.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/ControlPanel/ControlPanelUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/Viewer/BillboardContents.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/Viewer/BillboardContents.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/Viewer/Display.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/Viewer/Display.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/Viewer/DisplayBillboard$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/Viewer/DisplayBillboard$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/Viewer/DisplayBillboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/Viewer/DisplayBillboard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CAB302-BillboardAssignment/assignment1/billboard/Viewer/ViewerTester.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,9 +59,13 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Practicals/prac03" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -109,10 +140,10 @@
       <screen x="0" y="0" width="1440" height="920" />
     </state>
     <state x="351" y="119" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.920@0.0.1440.920" timestamp="1591250039844" />
-    <state x="885" y="173" key="#com.intellij.ide.util.MemberChooser" timestamp="1590649167992">
+    <state x="885" y="173" key="#com.intellij.ide.util.MemberChooser" timestamp="1591343904511">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state x="885" y="173" key="#com.intellij.ide.util.MemberChooser/0.0.1440.920@0.0.1440.920" timestamp="1590649167992" />
+    <state x="885" y="173" key="#com.intellij.ide.util.MemberChooser/0.0.1440.920@0.0.1440.920" timestamp="1591343904511" />
     <state x="626" y="248" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1591250038375">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
@@ -126,30 +157,30 @@
       <screen x="0" y="0" width="1440" height="920" />
     </state>
     <state x="310" y="102" key="#com.intellij.openapi.projectRoots.ui.ProjectJdksEditor/0.0.1440.920@0.0.1440.920" timestamp="1590910303450" />
-    <state x="400" y="123" key="FileChooserDialogImpl" timestamp="1591234673650">
+    <state x="400" y="123" key="FileChooserDialogImpl" timestamp="1591341292340">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state x="400" y="123" key="FileChooserDialogImpl/0.0.1440.920@0.0.1440.920" timestamp="1591234673650" />
+    <state x="400" y="123" key="FileChooserDialogImpl/0.0.1440.920@0.0.1440.920" timestamp="1591341292340" />
     <state x="533" y="139" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1589269098396" />
-    <state width="675" height="239" key="GridCell.Tab.0.bottom" timestamp="1591340547435">
+    <state width="675" height="171" key="GridCell.Tab.0.bottom" timestamp="1591357965043">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state width="675" height="239" key="GridCell.Tab.0.bottom/0.0.1440.920@0.0.1440.920" timestamp="1591340547435" />
+    <state width="675" height="171" key="GridCell.Tab.0.bottom/0.0.1440.920@0.0.1440.920" timestamp="1591357965043" />
     <state width="1877" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589335874753" />
-    <state width="675" height="239" key="GridCell.Tab.0.center" timestamp="1591340547435">
+    <state width="675" height="171" key="GridCell.Tab.0.center" timestamp="1591357965042">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state width="675" height="239" key="GridCell.Tab.0.center/0.0.1440.920@0.0.1440.920" timestamp="1591340547435" />
+    <state width="675" height="171" key="GridCell.Tab.0.center/0.0.1440.920@0.0.1440.920" timestamp="1591357965042" />
     <state width="1877" height="279" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589335874753" />
-    <state width="675" height="239" key="GridCell.Tab.0.left" timestamp="1591340547435">
+    <state width="675" height="171" key="GridCell.Tab.0.left" timestamp="1591357965042">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state width="675" height="239" key="GridCell.Tab.0.left/0.0.1440.920@0.0.1440.920" timestamp="1591340547435" />
+    <state width="675" height="171" key="GridCell.Tab.0.left/0.0.1440.920@0.0.1440.920" timestamp="1591357965042" />
     <state width="1877" height="279" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589335874753" />
-    <state width="675" height="239" key="GridCell.Tab.0.right" timestamp="1591340547435">
+    <state width="675" height="171" key="GridCell.Tab.0.right" timestamp="1591357965042">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state width="675" height="239" key="GridCell.Tab.0.right/0.0.1440.920@0.0.1440.920" timestamp="1591340547435" />
+    <state width="675" height="171" key="GridCell.Tab.0.right/0.0.1440.920@0.0.1440.920" timestamp="1591357965042" />
     <state width="1877" height="279" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589335874753" />
     <state width="1397" height="300" key="GridCell.Tab.1.bottom" timestamp="1591269599505">
       <screen x="0" y="0" width="1440" height="920" />
@@ -176,13 +207,17 @@
     </state>
     <state x="402" y="50" key="SettingsEditor/0.0.1440.920@0.0.1440.920" timestamp="1591234685870" />
     <state x="440" y="94" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1589269101859" />
+    <state x="815" y="357" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1591341669479">
+      <screen x="0" y="0" width="1440" height="920" />
+    </state>
+    <state x="815" y="357" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1440.920@0.0.1440.920" timestamp="1591341669479" />
     <state x="171" y="81" key="new project wizard" timestamp="1590910722176">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
     <state x="171" y="81" key="new project wizard/0.0.1440.920@0.0.1440.920" timestamp="1590910722176" />
-    <state x="743" y="200" width="672" height="678" key="search.everywhere.popup" timestamp="1591328384624">
+    <state x="743" y="200" width="672" height="678" key="search.everywhere.popup" timestamp="1591350728005">
       <screen x="0" y="0" width="1440" height="920" />
     </state>
-    <state x="743" y="200" width="672" height="678" key="search.everywhere.popup/0.0.1440.920@0.0.1440.920" timestamp="1591328384624" />
+    <state x="743" y="200" width="672" height="678" key="search.everywhere.popup/0.0.1440.920@0.0.1440.920" timestamp="1591350728005" />
   </component>
 </project>
