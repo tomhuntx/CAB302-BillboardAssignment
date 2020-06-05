@@ -16,6 +16,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * ControlPanelUI Class
+ * Processes all UI for the Control Panel Application
+ * Run by the ControlPanelManager
+ */
 public class ControlPanelUI extends JFrame {
 
     // Mock admin user

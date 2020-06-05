@@ -6,8 +6,10 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
- * Create the JTable for listing billboards.
+ * BillboardListTable Class
+ * Creates the JTable for listing billboards
  * It has four data columns (billboard name, creator, preview button, edit button, delete button)
+ * Run and processed by the List Billboards section of the Control Panel
  */
 public class BillboardListTable extends DefaultTableModel {
     private static String[] columns = {"Billboard Name", "Creator", "Preview", "Edit", "Delete"};

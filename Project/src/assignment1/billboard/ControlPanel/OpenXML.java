@@ -7,6 +7,11 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+/**
+ * OpenXML class
+ * Search window and processing for opening a .xml file
+ * Used by the "Import .xml" button in the Create Billboard section of the Control Panel
+ */
 public class OpenXML {
 
     // Opens a choose file dialogue from the user's home directory
