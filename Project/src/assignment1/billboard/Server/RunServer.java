@@ -1,6 +1,8 @@
 package assignment1.billboard.Server;
 
 import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.*;
 
 public class RunServer {
@@ -21,16 +23,46 @@ public class RunServer {
             Example of the PreparedStatement being used to add a .xml file to the database, with the name billboard01
              */
             Statement queryStatement = connection.createStatement();
-            retrieveBillboard(queryStatement, "billboard01");
+            Object xmlByteData = retrieveBillboard(queryStatement, "billboard01");
             /*
-            Example of the retrieveBillboard method, retrieving an object with the name billboard01 in the database, which can be toString() to display the contents of the xml.
-            This should be further implemented and turned back into a File object, such that the billboard.Viewer can parse through the File.
+            Example of the retrieveBillboard method, retrieving an object with the name billboard01 in the database
              */
-
+            String xmlString = xmlByteData.toString();  // This can be converted into a string and will be an exact copy of the xml file that was stored.
             st.close();
             insertStatement.close();
             queryStatement.close();
             connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            ServerSocket serverSocket = new ServerSocket(12345);
+            for(;;) {
+                Socket socket = serverSocket.accept();
+                Statement queryStatement = connection.createStatement();
+                System.out.println("Connected to " + socket.getInetAddress());
+
+                InputStream inputStream = socket.getInputStream();
+                OutputStream outputStream = socket.getOutputStream();
+                ObjectInputStream OIS = new ObjectInputStream(inputStream);
+                ObjectOutputStream OOS = new ObjectOutputStream(outputStream);
+                /*
+                This code wont ever run because the viewer doesn't send anything over the socket.
+                 */
+                if (OIS.readUTF() == "Requesting Billoard"){
+                    OOS.writeUTF("You are requesting a Billboard from Schedule");
+                    OOS.flush();
+                    Object billboardByteData = retrieveBillboard(queryStatement,"billboard01");
+                    //  The fileName was meant to be determine by a method which was given the schedule time could
+                    //  extract the fileName from the specific time and return its name.
+                }
+                /*
+                There is no handling for the Control Panel either, because again there are no socket's being initiated
+                at any time requesting anything. Handling could not be done.
+                 */
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -157,16 +189,17 @@ public class RunServer {
      * @param queryStatement a basic SQL statment, in this case utilizing RETRIEVEBILLBOARD
      * @param fileName The indicator for the SQL statement to locate the specified file.
      */
-    private static void retrieveBillboard(Statement queryStatement, String fileName){
+    private static Object retrieveBillboard(Statement queryStatement, String fileName) {
+        Object obj = null;
         try {
             String queryFileName = RETRIEVEBILLBOARD + " '" + fileName + "'";
             ResultSet rs = queryStatement.executeQuery(queryFileName);
             rs.next();
 
-            byte[] data =  rs.getBytes("billboardxml");
+            byte[] data = rs.getBytes("billboardxml");
             ObjectInputStream OIS = new ObjectInputStream(new ByteArrayInputStream(data));
-            Object obj = OIS.readObject();
-            System.out.println(obj.toString());
+            obj = OIS.readObject();
+            //System.out.println(obj.toString());
 
             rs.close();
         } catch (SQLException e) {
@@ -176,6 +209,6 @@ public class RunServer {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
+        return obj;
     }
 }
