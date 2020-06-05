@@ -16,6 +16,7 @@ public class DisplayBillboard {
     }
 
     /**
+     * Main function of viewer package
      * @param args
      */
     public static void main(String[] args) {

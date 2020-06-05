@@ -11,6 +11,7 @@ import org.xml.sax.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.MalformedURLException;
@@ -27,6 +28,7 @@ public class BillboardContents extends JFrame{
     private Boolean msg;
     private Boolean inf;
     private Boolean pic;
+    private BufferedImage image;
 
     /**
      * Instantiates new GUI
@@ -118,12 +120,21 @@ public class BillboardContents extends JFrame{
         } catch (ParserConfigurationException e) {
             errorLabel.setText(e.getMessage());
             displayPanel.add(errorLabel);
+            add(displayPanel, BorderLayout.CENTER);
+            pack();
+            setVisible(true);
         } catch (SAXException e) {
             errorLabel.setText(e.getMessage());
             displayPanel.add(errorLabel);
+            add(displayPanel, BorderLayout.CENTER);
+            pack();
+            setVisible(true);
         } catch (IOException e) {
             errorLabel.setText(e.getMessage());
             displayPanel.add(errorLabel);
+            add(displayPanel, BorderLayout.CENTER);
+            pack();
+            setVisible(true);
         }
     }
 
@@ -156,19 +167,32 @@ public class BillboardContents extends JFrame{
             if(picURL != null && picDATA == null){
                 try{
                     URL url = new URL(picURL.getTextContent());
-                    Image image = ImageIO.read(url);
-                    pictureLabel.setIcon(new ImageIcon(image));
+                    image = ImageIO.read(url);
                 }
                 catch (MalformedURLException e) {
                     errorLabel.setText(e.getMessage());
                     displayPanel.add(errorLabel);
+                    add(displayPanel, BorderLayout.CENTER);
+                    pack();
+                    setVisible(true);
                 } catch (IOException e) {
                     errorLabel.setText(e.getMessage());
                     displayPanel.add(errorLabel);
+                    add(displayPanel, BorderLayout.CENTER);
+                    pack();
+                    setVisible(true);
                 }
             } else if(picURL == null && picDATA != null){
-                value = picDATA.getTextContent();
-                pictureLabel.setIcon(new ImageIcon(Base64.getDecoder().decode(value)));
+                try {
+                    value = picDATA.getTextContent();
+                    image = ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(value)));
+                } catch (IOException e){
+                    errorLabel.setText(e.getMessage());
+                    displayPanel.add(errorLabel);
+                    add(displayPanel, BorderLayout.CENTER);
+                    pack();
+                    setVisible(true);
+                }
             }
         }
     }
@@ -201,6 +225,9 @@ public class BillboardContents extends JFrame{
                     errorLabel.setPreferredSize(screen);
                     errorLabel.setForeground(Color.red);
                     displayPanel.add(errorLabel, gridLayout);
+                    add(displayPanel, BorderLayout.CENTER);
+                    pack();
+                    setVisible(true);
                 }else if(msg){
                     /*
                      * Message Only
@@ -238,6 +265,8 @@ public class BillboardContents extends JFrame{
                      * Picture Only
                      */
                     pictureLabel.setPreferredSize(picScreen);
+                    Image img = image.getScaledInstance(picScreen.width, picScreen.height, Image.SCALE_SMOOTH);
+                    pictureLabel.setIcon(new ImageIcon(img));
                     displayPanel.add(pictureLabel, BorderLayout.CENTER);
                 }else if(msg) {
                     /*
@@ -249,6 +278,8 @@ public class BillboardContents extends JFrame{
                     displayPanel.add(messageLabel, BorderLayout.NORTH);
 
                     pictureLabel.setPreferredSize(picScreen);
+                    Image img = image.getScaledInstance(picScreen.width, picScreen.height, Image.SCALE_SMOOTH);
+                    pictureLabel.setIcon(new ImageIcon(img));
                     displayPanel.add(pictureLabel, BorderLayout.CENTER);
                 }
             }else if(inf){
@@ -257,6 +288,8 @@ public class BillboardContents extends JFrame{
                      * Information And Picture
                      */
                     pictureLabel.setPreferredSize(picScreen);
+                    Image img = image.getScaledInstance(picScreen.width, picScreen.height, Image.SCALE_SMOOTH);
+                    pictureLabel.setIcon(new ImageIcon(img));
                     displayPanel.add(pictureLabel, BorderLayout.CENTER);
 
                     informationLabel.setPreferredSize(picScreen);
@@ -273,6 +306,8 @@ public class BillboardContents extends JFrame{
                     displayPanel.add(messageLabel, BorderLayout.NORTH);
 
                     pictureLabel.setPreferredSize(picScreen);
+                    Image img = image.getScaledInstance(picScreen.width, picScreen.height, Image.SCALE_SMOOTH);
+                    pictureLabel.setIcon(new ImageIcon(img));
                     displayPanel.add(pictureLabel, BorderLayout.CENTER);
 
                     informationLabel.setPreferredSize(picScreen);
