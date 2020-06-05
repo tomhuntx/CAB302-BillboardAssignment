@@ -22,18 +22,18 @@ public class ControlPanelUI extends JFrame {
     // Please adjust boolean variables to test changes to access of hub items
     // Adjust name and password to require this info on startup
     // Would ideally get this info from the database
-    private static boolean[] adminPerms = new boolean[] {true, true, true, true};
-    private static User admin = new User("username", "password", adminPerms);
+    protected static boolean[] adminPerms = new boolean[] {true, true, true, true};
+    protected static User admin = new User("username", "password", adminPerms);
 
     // Mock dummy with create billboards and schedule billboards permissions only
-    private static boolean[] dummyPerms = new boolean[] {true, true, false, false};
-    private static User dummy = new User("dummy", "12345", dummyPerms);
+    protected static boolean[] dummyPerms = new boolean[] {true, true, false, false};
+    protected static User dummy = new User("dummy", "12345", dummyPerms);
 
     // Dummy group of users - this is all the info that would be needed from the database
-    private static ArrayList<User> users = new ArrayList<>(Arrays.asList(admin, dummy));
+    protected static ArrayList<User> users = new ArrayList<>(Arrays.asList(admin, dummy));
 
     // Current user
-    private static User current_user;
+    protected static User current_user = null;
 
     // User input into the login GUI
     JTextField username_input;
@@ -205,7 +205,6 @@ public class ControlPanelUI extends JFrame {
         buttonList.add(scheduleBB);
         buttonList.add(editUsers);
 
-        boolean[] perms = current_user.getPermissions();
         // Add buttons to options panel
         for (int i = 0; i < buttonList.size(); i++) {
             JButton button = buttonList.get(i);
@@ -213,7 +212,7 @@ public class ControlPanelUI extends JFrame {
             optionsPanel.add(button);
 
             // Disable button if lacks permissions
-            if (!perms[i]) {
+            if (!current_user.checkPermissions(i)) {
                 button.setEnabled(false);
                 button.setToolTipText("You do not have permission to " + button.getText());
             }
@@ -959,7 +958,7 @@ public class ControlPanelUI extends JFrame {
                 }
 
                 // Repeat time
-                int repeat = 0;
+                int repeat;
                 String repeatOutput = "not repeat";
                 for (JRadioButton button : repeatRbs) {
                     if (button.isSelected()) {
