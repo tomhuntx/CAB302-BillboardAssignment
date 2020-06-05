@@ -50,8 +50,8 @@ public final class User {
 
     /**
      * Check a single permission of user
-     * @param type (0-4)
-     * @return their permissions for one of the four (createBB, listBB, scheduleBB, editPermissions)
+     * @param type 0-4 (createBB, listBB, scheduleBB, editPermissions)
+     * @return boolean of their permissions for the selected type
      */
     public boolean checkPermissions(int type) {
         // Error if invalid input
@@ -60,7 +60,7 @@ public final class User {
                     "(createBB, listBB, scheduleBB, editPermissions)");
         }
         // Return true/false based on type
-        return permissions[type];
+        return getPermissions()[type];
     }
 
     /**

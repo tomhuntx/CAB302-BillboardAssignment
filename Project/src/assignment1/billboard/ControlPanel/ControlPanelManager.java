@@ -1,5 +1,7 @@
 package assignment1.billboard.ControlPanel;
 
+import assignment1.billboard.Server.DBConnection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.MessageFormat;
@@ -7,6 +9,7 @@ import java.text.MessageFormat;
 public class ControlPanelManager {
 
     private static ControlPanelUI ui;
+    private static DBConnection database;
 
     /**
      * Start the control panel application and create the login GUI
@@ -14,6 +17,9 @@ public class ControlPanelManager {
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
         ui = new ControlPanelUI();
+
+        // Connect to the database
+        //database = new DBConnection();
 
         // Run the first control panel window
         SwingUtilities.invokeLater(ui::loginGUI);

@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
  */
 public class BillboardListTable extends DefaultTableModel {
     private static String[] columns = {"Billboard Name", "Creator", "Preview", "Edit", "Delete"};
+
+    // Dummy data - would get this from the server
     private static String[][] data = {
             { "Billboard1", "Jim", "PREV", "EDIT", "DEL" },
             { "Billboard2 Longer Name 3000", "Fred",  "PREV", "EDIT", "DEL"},
@@ -120,7 +122,6 @@ public class BillboardListTable extends DefaultTableModel {
                     currentButton.addActionListener(event -> JOptionPane.showMessageDialog(null,
                             "Error") );
             }
-
             return currentButton;
         }
         public Object getCellEditorValue() {

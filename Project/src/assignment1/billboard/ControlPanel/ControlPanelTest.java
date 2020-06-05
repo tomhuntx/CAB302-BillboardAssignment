@@ -1,7 +1,6 @@
 package assignment1.billboard.ControlPanel;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import assignment1.billboard.Server.DBConnection;
 import org.junit.jupiter.api.*;
 import javax.swing.*;
@@ -17,16 +16,14 @@ public class ControlPanelTest {
     // Control panel UI
     ControlPanelUI testUI;
 
-    /* Test 0: Ensure the UI can be created - Passes */
-    @BeforeAll
-    @Test
+    /* Test 0: Ensure the control panel can be instantiated - Passes */
+    @BeforeAll @Test
     static void constructControlPanel() {
         ControlPanelManager.main(null);
     }
 
     /* Test 1: Ensure the login menu activates - Passes */
-    @BeforeEach
-    @Test
+    @BeforeEach @Test
     public void constructGUI() throws InvocationTargetException, InterruptedException {
         SwingUtilities.invokeAndWait(() -> {
             // Open and run the login window

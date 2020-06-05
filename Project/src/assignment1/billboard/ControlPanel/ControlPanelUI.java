@@ -205,7 +205,6 @@ public class ControlPanelUI extends JFrame {
         buttonList.add(scheduleBB);
         buttonList.add(editUsers);
 
-        boolean[] perms = current_user.getPermissions();
         // Add buttons to options panel
         for (int i = 0; i < buttonList.size(); i++) {
             JButton button = buttonList.get(i);
@@ -213,7 +212,7 @@ public class ControlPanelUI extends JFrame {
             optionsPanel.add(button);
 
             // Disable button if lacks permissions
-            if (!perms[i]) {
+            if (!current_user.checkPermissions(i)) {
                 button.setEnabled(false);
                 button.setToolTipText("You do not have permission to " + button.getText());
             }
