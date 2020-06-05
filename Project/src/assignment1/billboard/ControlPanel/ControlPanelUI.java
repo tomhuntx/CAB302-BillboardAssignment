@@ -87,8 +87,10 @@ public class ControlPanelUI extends JFrame {
      * Accepts username and password input and ensures credentials are correct before proceeding.
      */
     public void loginGUI()  {
-        //Create the control panel window.
+        // Create the control panel window
         setTitle("Control Panel");
+
+        // Ensure the window exits on close
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Title label
@@ -177,8 +179,10 @@ public class ControlPanelUI extends JFrame {
      */
     public void ControlPanelHub() {
         // Initialise control panel hub
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Control Panel");
+
+        // Ensure the window exits on close
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Create hub container and layout
         hubContainer = new JPanel();
@@ -317,11 +321,11 @@ public class ControlPanelUI extends JFrame {
         public void actionPerformed( ActionEvent e )  {
             // Custom change password panel
             JPanel passPanel = new JPanel();
-            JLabel passLabel = new JLabel("Change Password:");
+            JLabel passLabel = new JLabel("New Password:");
             JPasswordField newPass = new JPasswordField(10);
             passPanel.add(passLabel);
             passPanel.add(newPass);
-            int option = JOptionPane.showOptionDialog(null, passPanel, "New Password",
+            int option = JOptionPane.showOptionDialog(null, passPanel, "Change Password",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
                     null, null, null);
 
@@ -689,7 +693,7 @@ public class ControlPanelUI extends JFrame {
         // Customise the table spacing
         table.setRowHeight(30);
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(150);
+        columnModel.getColumn(0).setPreferredWidth(130);
         columnModel.getColumn(1).setPreferredWidth(100);
         columnModel.getColumn(2).setPreferredWidth(80);
 
@@ -944,18 +948,18 @@ public class ControlPanelUI extends JFrame {
                 // Throw an exception if the time is in the past
                 if (dateBox.getSelectedItem() == dateBox.getItemAt(0) &&
                         format.parse(time).before(format.parse(currentTime))) {
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Please select a time in the future.");
                 }
 
                 // Duration
                 String duration = durationText.getText();
                 int durationInt = Integer.parseInt(duration);
                 if (durationInt <= 0) {
-                    throw new IndexOutOfBoundsException();
+                    throw new IllegalArgumentException("The duration cannot be 0, and no values can be less than 0.");
                 }
 
                 // Repeat time
-                int repeat;
+                int repeat = 0;
                 String repeatOutput = "not repeat";
                 for (JRadioButton button : repeatRbs) {
                     if (button.isSelected()) {
@@ -979,7 +983,13 @@ public class ControlPanelUI extends JFrame {
                                 repeatOutput = "not repeat";
                             }
                             else if (repeat < 0) {
-                                throw new IndexOutOfBoundsException();
+                                throw new IllegalArgumentException(
+                                        "The duration cannot be 0, and no values can be less than 0.");
+                            }
+                            // Ensure repeat time cannot be more than duration
+                            if (durationInt > repeat) {
+                                throw new IllegalArgumentException(
+                                        "Scheduling duration cannot be longer than the Billboard's repeat time.");
                             }
                         } else throw new Exception("Could not find selected radio button.");
                     }
@@ -1002,18 +1012,12 @@ public class ControlPanelUI extends JFrame {
             }
             catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null,
-                        "Time durations must be valid numbers only.",
+                        "Please enter numerical values only",
                         "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
             }
             catch (IllegalArgumentException iae) {
                 JOptionPane.showMessageDialog(null,
-                        "Please select a time in the future.",
-                        "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
-            }
-            catch (IndexOutOfBoundsException oob) {
-                JOptionPane.showMessageDialog(null,
-                        "The duration cannot be 0, and no values can be less than 0.",
-                        "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
+                        iae.getMessage(), "Schedule Billboard Failed", JOptionPane.WARNING_MESSAGE);
             }
             catch (Exception ex) {
                 JOptionPane.showMessageDialog(null,
@@ -1131,9 +1135,9 @@ public class ControlPanelUI extends JFrame {
                         "Please choose a more secure password.",
                         "Scheduling Billboard", JOptionPane.WARNING_MESSAGE);
             }
-            else if (username.length() >= 20) {
+            else if (username.length() >= 15) {
                 JOptionPane.showMessageDialog(null,
-                        "Username must be less than 20 characters.",
+                        "Username must be less than 15 characters.",
                         "User Creation Failed", JOptionPane.WARNING_MESSAGE);
             }
             else {

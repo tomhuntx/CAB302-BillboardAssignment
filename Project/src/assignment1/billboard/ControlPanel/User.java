@@ -13,7 +13,7 @@ public final class User {
     protected boolean[] permissions;
 
     /**
-     * Constructor to create a new user with a username and password
+     * Constructor to create a new user
      * @param user_username of new user
      * @param user_password of new user
      * @param user_permissions of new user (boolean array of length 4)
@@ -56,7 +56,7 @@ public final class User {
     public boolean checkPermissions(int type) {
         // Error if invalid input
         if (type > 4 || type < 0) {
-            throw new NullPointerException("Permissions are from 0 to 3 " +
+            throw new NullPointerException("Permission type must be 0, 1, 2, or 3 " +
                     "(createBB, listBB, scheduleBB, editPermissions)");
         }
         // Return true/false based on type

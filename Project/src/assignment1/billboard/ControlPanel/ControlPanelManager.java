@@ -37,7 +37,7 @@ public class ControlPanelManager {
     }
 
     /**
-     * Logout of account and re-login
+     * Logout of account and create a new login window
      */
     protected static void logout() {
         // Dispose of the current panel and create a new one
